@@ -4,7 +4,7 @@
 #include <Trappist-1\graphics\Renderer2D.hpp>
 #include <Trappist-1\graphics\Shader.hpp>
 
-#include <Trappist-1\scenes\SceneGame.hpp>
+#include <Trappist-1\Scenes.hpp>
 #include <iostream>
 #include <GL\glew.h>
 
@@ -120,13 +120,17 @@ int main()
 
 bool Core::running = false;
 sf::Vector2i Core::windowSize;
+Scene *Core::scene = nullptr;
+Font Core::font;
+SceneType Core::queriedScene = SceneType::NONE;
 
 Core::Core()
 {
 	windowSize = createWindow();
 	//scene = new Scene();
 	TexturePacker::packFolder("res/textures/tiles", "res/textures", "tiles", 128, 128);
-	scene = new SceneGame();
+	font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
+	changeScene(SceneType::MENU);
 }
 
 Core::~Core() 
@@ -160,6 +164,7 @@ void Core::run()
 	unsigned int countedFPS = 0;
 
 	Shader shader2d("res/shaders/sprite.vert", "res/shaders/sprite.frag");
+	Shader fontShader("res/shaders/font.vert", "res/shaders/font.frag");
 
 	std::string s("textures[");
 	for (int i = 0; i < 32; ++i)
@@ -170,6 +175,7 @@ void Core::run()
 
 	Renderer2D renderer2d;
 	renderer2d.setShader(&shader2d);
+	renderer2d.setFontShader(&fontShader);
 
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -208,7 +214,12 @@ void Core::run()
 				Input::updateButton(event.mouseButton.button, false);
 				break;
 			}
+			if (scene)
+				scene->handle(*window, event);
 		}
+
+		if (scene && scene->type != queriedScene)
+			changeScene(queriedScene);
 
 		scene->update();
 		
@@ -248,6 +259,28 @@ sf::Vector2i Core::createWindow()
 }
 
 //Static Methods:
+
+void Core::changeScene(SceneType type)
+{
+	queriedScene = type;
+	delete scene;
+
+	switch (type)
+	{
+	default:
+	case SceneType::MENU:
+		scene = new SceneMenu;
+		break;
+	case SceneType::GAME:
+		scene = new SceneGame;
+		break;
+	}
+}
+
+void Core::queryScene(SceneType type)
+{
+	queriedScene = type;
+}
 
 void Core::log(const std::string &message)
 {

@@ -7,7 +7,7 @@
 namespace ui
 {
 	Label::Label()
-		: BASE(), thickness(0.0f), outlineOffset(0.0f, 0.0f), outlineBlur(0.0f), needsUpdate(true), textAlignment(Alignment::CENTER), autoSizeMode(AutoSizeMode::BOTH), padding(0.0f, 5.0f), multiLine(true)
+		: BASE(), thickness(0.0f), outlineOffset(0.0f, 0.0f), outlineBlur(0.0f), needsUpdate(true), textAlignment(Alignment::CENTER), autoSizeMode(AutoSizeMode::NONE), padding(0.0f, 0.0f), multiLine(true)
 	{	}
 
 	Label::~Label()

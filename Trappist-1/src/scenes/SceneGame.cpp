@@ -13,7 +13,7 @@
 
 SceneGame::SceneGame()
 {
-	type = SceneType::SCENEGAME;
+	type = SceneType::GAME;
 
 	testTexture.load("res/textures/entities/Player.png");
 	testTexture.setSmooth(false);

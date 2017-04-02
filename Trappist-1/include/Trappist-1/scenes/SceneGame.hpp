@@ -8,7 +8,7 @@ class SceneGame : public Scene
 {
 public:
 	SceneGame();
-	~SceneGame();
+	virtual ~SceneGame();
 
 	virtual void update();
 	virtual void render(Renderer2D &renderer2d) override;

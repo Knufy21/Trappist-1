@@ -6,6 +6,7 @@
 #include <Trappist-1\scenes\Scene.hpp>
 #include <string>
 #include <SFML\Graphics.hpp>
+#include <Trappist-1\graphics\fonts\Font.hpp>
 
 class Core 
 {
@@ -18,6 +19,8 @@ public:
 
 	static void changeScene(SceneType type);
 
+	static void queryScene(SceneType type);
+
 	// Writes the message into the console via std::cout and ends the line.
 	static void log(const std::string &message);
 
@@ -25,6 +28,7 @@ public:
 	static void exit();
 
 	static sf::Vector2i windowSize;
+	static Font font;
 private:
 	// Creates the window and returns the size of it.
 	sf::Vector2i createWindow();
@@ -32,5 +36,7 @@ private:
 	static bool running;
 	sf::Window *window;
 	
-	Scene *scene;
+	static Scene *scene;
+	static SceneType queriedScene;
+	
 };

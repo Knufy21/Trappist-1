@@ -20,6 +20,9 @@ namespace ui
 		// Submits all widgets to the specified renderer.
 		void submit(Renderer2D &renderer2d);
 
+		// Updates all widgets with the speicifed deltaTime.
+		void update(float deltaTime);
+
 		// Handles an event created by the specified window.
 		void handle(sf::Window &window, sf::Event &event);
 

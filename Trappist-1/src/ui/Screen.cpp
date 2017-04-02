@@ -17,12 +17,19 @@ namespace ui
 			(*it)->submit(renderer2d);
 	}
 
+	void Screen::update(float deltaTime)
+	{
+		for (auto it = this->widgets.begin(); it != this->widgets.end(); ++it)
+			(*it)->update(deltaTime);
+	}
+
 	void Screen::handle(sf::Window &window, sf::Event &event)
 	{
 		switch (event.type)
 		{
 		case sf::Event::Resized:
-			this->sizeChangedFun(event.size.width, event.size.height);
+			if(this->sizeChangedFun)
+				this->sizeChangedFun(event.size.width, event.size.height);
 			break;
 		case sf::Event::MouseButtonPressed:
 			for (Widget *widget : this->widgets)
