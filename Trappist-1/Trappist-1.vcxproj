@@ -18,6 +18,117 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Trappist-1\CollisionDetector.hpp" />
+    <ClInclude Include="include\Trappist-1\Components.hpp" />
+    <ClInclude Include="include\Trappist-1\Components\Collider.hpp" />
+    <ClInclude Include="include\Trappist-1\Components\Component.hpp" />
+    <ClInclude Include="include\Trappist-1\Components\Health.hpp" />
+    <ClInclude Include="include\Trappist-1\Components\Movement.hpp" />
+    <ClInclude Include="include\Trappist-1\Components\Script.hpp" />
+    <ClInclude Include="include\Trappist-1\Core.hpp" />
+    <ClInclude Include="include\Trappist-1\Entities.hpp" />
+    <ClInclude Include="include\Trappist-1\Entities\Entity.hpp" />
+    <ClInclude Include="include\Trappist-1\Entities\Player.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Fonts\Character.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Fonts\Font.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Fonts\Kerning.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Renderer2D.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Shader.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\SplitTexture.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Texture.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Transform2D.hpp" />
+    <ClInclude Include="include\Trappist-1\Graphics\Vertex2D.hpp" />
+    <ClInclude Include="include\Trappist-1\Scenes\Scene.hpp" />
+    <ClInclude Include="include\Trappist-1\Scenes\SceneGame.hpp" />
+    <ClInclude Include="include\Trappist-1\TextureAtlas.hpp" />
+    <ClInclude Include="include\Trappist-1\TextureManager.hpp" />
+    <ClInclude Include="include\Trappist-1\Tile.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\Action.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\CircleAction.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\FloatAction.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\Vec2Action.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\Vec3Action.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Actions\Vec4Action.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Interpolation.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\CharListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\CursorEnterListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\CursorPositionListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\DropListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\FocusListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\KeyListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\Listener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\MouseButtonListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\MouseScrollWheelListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Listeners\TemplateListener.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Screen.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Button.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\CheckButton.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\CheckButtonGroup.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Group.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Image.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Label.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Progressbar.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\RadioButtonGroup.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\ScrollView.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Slider.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Table.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\TextBox.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\View.hpp" />
+    <ClInclude Include="include\Trappist-1\UI\Widgets\Widget.hpp" />
+    <ClInclude Include="include\Trappist-1\Util.hpp" />
+    <ClInclude Include="include\Trappist-1\Util\EightBoolArray.hpp" />
+    <ClInclude Include="include\Trappist-1\Util\Input.hpp" />
+    <ClInclude Include="include\Trappist-1\Util\TexturePacker.hpp" />
+    <ClInclude Include="include\Trappist-1\Util\Time.hpp" />
+    <ClInclude Include="include\Trappist-1\Util\Timer.hpp" />
+    <ClInclude Include="include\Trappist-1\World.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\CollisionDetector.cpp" />
+    <ClCompile Include="src\Components\Collider.cpp" />
+    <ClCompile Include="src\Components\Health.cpp" />
+    <ClCompile Include="src\Components\Movement.cpp" />
+    <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\Entities\Entity.cpp" />
+    <ClCompile Include="src\Graphics\Fonts\Font.cpp" />
+    <ClCompile Include="src\Graphics\Renderer2D.cpp" />
+    <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\Texture.cpp" />
+    <ClCompile Include="src\Graphics\Transform2D.cpp" />
+    <ClCompile Include="src\SceneGame.cpp" />
+    <ClCompile Include="src\TextureAtlas.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\ui\actions\Action.cpp" />
+    <ClCompile Include="src\ui\actions\FloatAction.cpp" />
+    <ClCompile Include="src\ui\actions\Vec2Action.cpp" />
+    <ClCompile Include="src\ui\actions\Vec3Action.cpp" />
+    <ClCompile Include="src\ui\actions\Vec4Action.cpp" />
+    <ClCompile Include="src\ui\Interpolation.cpp" />
+    <ClCompile Include="src\ui\Screen.cpp" />
+    <ClCompile Include="src\ui\widgets\Button.cpp" />
+    <ClCompile Include="src\ui\widgets\CheckButton.cpp" />
+    <ClCompile Include="src\ui\widgets\CheckButtonGroup.cpp" />
+    <ClCompile Include="src\ui\widgets\Group.cpp" />
+    <ClCompile Include="src\ui\widgets\Image.cpp" />
+    <ClCompile Include="src\ui\widgets\Label.cpp" />
+    <ClCompile Include="src\ui\widgets\Progressbar.cpp" />
+    <ClCompile Include="src\ui\widgets\Slider.cpp" />
+    <ClCompile Include="src\ui\widgets\Table.cpp" />
+    <ClCompile Include="src\ui\widgets\TextBox.cpp" />
+    <ClCompile Include="src\ui\widgets\View.cpp" />
+    <ClCompile Include="src\ui\widgets\Widget.cpp" />
+    <ClCompile Include="src\Util\Input.cpp" />
+    <ClCompile Include="src\Util\TexturePacker.cpp" />
+    <ClCompile Include="src\Util\Time.cpp" />
+    <ClCompile Include="src\World.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{CF1F77F0-161E-4059-8D31-D351847A438F}</ProjectGuid>
@@ -145,9 +256,6 @@
       <AdditionalDependencies>glew32s.lib;winmm.lib;opengl32.lib;gdi32.lib;freetype.lib;jpeg.lib;sfml-system-s.lib;sfml-network-s.lib;sfml-audio-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
