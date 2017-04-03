@@ -60,7 +60,7 @@ namespace ui
 		Alignment getTextAlignment() const;
 
 		// Sets the alignment in which the text will be displayed.
-		void setTextAligment(Alignment textAligment);
+		void setTextAlignment(Alignment textAligment);
 
 		bool isAutoSizeMode(AutoSizeMode autoSizeMode) const;
 
@@ -233,7 +233,7 @@ namespace ui
 		return this->textAlignment;
 	}
 
-	inline void Label::setTextAligment(Label::Alignment textAligment)
+	inline void Label::setTextAlignment(Label::Alignment textAligment)
 	{
 		this->textAlignment = textAligment;
 		this-> needsUpdate = true;

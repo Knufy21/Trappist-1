@@ -17,8 +17,23 @@ public:
 	virtual void onSizeChanged(unsigned int width, unsigned int height) override;
 
 private:
-	ui::Button btnPlay;
 	ui::Button btnOptions;
-	ui::Button btnExit;
+	ui::Button btnCredits;
+	ui::Button btnQuit;
+
 	ui::Label lblTitle;
+
+	ui::Label lblChooseInfo;
+
+	ui::Image imgTrappist1a;
+	ui::Image imgTrappist1b;
+	ui::Image imgTrappist1c;
+	ui::Image imgTrappist1d;
+	ui::Image imgTrappist1e;
+	ui::Image imgTrappist1f;
+	ui::Image imgTrappist1g;
+	ui::Image imgTrappist1h;
+
+	//ui::Label lblTrappist1aInfo;
+	ui::Label lblPlanetInfo;
 };

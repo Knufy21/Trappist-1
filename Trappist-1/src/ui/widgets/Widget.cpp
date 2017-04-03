@@ -225,6 +225,13 @@ namespace ui
 			setTextureRect(sf::FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
+	sf::FloatRect Widget::getTextureRect() const
+	{
+		if (this->texture && this->texture->isSplit())
+			return sf::FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[15].texCoord.x - vertices[0].texCoord.x, vertices[15].texCoord.y - vertices[0].texCoord.y);
+		return sf::FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[2].texCoord.x - vertices[0].texCoord.x, vertices[2].texCoord.y - vertices[0].texCoord.y);
+	}
+
 	void Widget::setTextureRect(const sf::IntRect &rect)
 	{
 		setTextureRect(sf::FloatRect(

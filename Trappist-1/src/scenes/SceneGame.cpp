@@ -238,5 +238,6 @@ void SceneGame::playerMovement()
 
 void SceneGame::inputUpdate()
 {
-
+	if (Input::getKeyPressed(sf::Keyboard::Escape))
+		Core::queryScene(SceneType::MENU);
 }

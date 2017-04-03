@@ -89,6 +89,9 @@ namespace ui
 		// Sets the texture of the image being used for rendering.
 		void setTexture(const Texture *texture, bool resetTexCoords = true);
 
+		// Returns the texture rect of all vertices measured by a value between 0 and 1.
+		sf::FloatRect getTextureRect() const;
+
 		// Sets the texture rect for all vertices measured in pixels.
 		void setTextureRect(const sf::IntRect &rect);
 

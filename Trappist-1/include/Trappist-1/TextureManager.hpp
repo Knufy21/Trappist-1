@@ -9,7 +9,7 @@ namespace TextureManager
 	enum TextureHandles : TextureHandle
 	{
 		TILE_ATLAS,
-
+		TRAPPIST_1_SYSTEM_ATLAS,
 		COUNT
 	};
 

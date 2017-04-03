@@ -1,6 +1,7 @@
 #include <Trappist-1\ui\actions\Vec4Action.hpp>
 
-#include <Trappist-1\UI\Widgets\Widget.hpp>
+#include <Trappist-1\ui\widgets\Widget.hpp>
+#include <Trappist-1\ui\widgets\Label.hpp>
 
 namespace ui
 {
@@ -27,6 +28,22 @@ namespace ui
 			startValue = target->getColor();
 			endValue = startValue + inputValue;
 			break;
+		case Type::TEXT_RGBA_TO:
+			startValue = static_cast<Label*>(target)->getTextColor();
+			endValue = inputValue;
+			break;
+		case Type::TEXT_RGBA_BY:
+			startValue = static_cast<Label*>(target)->getTextColor();
+			endValue = startValue + inputValue;
+			break;
+		case Type::TEXT_OUTLINE_RGBA_TO:
+			startValue = static_cast<Label*>(target)->getTextOutlineColor();
+			endValue = inputValue;
+			break;
+		case Type::TEXT_OUTLINE_RGBA_BY:
+			startValue = static_cast<Label*>(target)->getTextOutlineColor();
+			endValue = startValue + inputValue;
+			break;
 		}
 	}
 
@@ -37,6 +54,14 @@ namespace ui
 		case Type::RGBA_TO:
 		case Type::RGBA_BY:
 			target->setColor(startValue + (endValue - startValue) * percent);
+			break;
+		case Type::TEXT_RGBA_TO:
+		case Type::TEXT_RGBA_BY:
+			static_cast<Label*>(target)->setTextColor(startValue + (endValue - startValue) * percent);
+			break;
+		case Type::TEXT_OUTLINE_RGBA_TO:
+		case Type::TEXT_OUTLINE_RGBA_BY:
+			static_cast<Label*>(target)->setTextOutlineColor(startValue + (endValue - startValue) * percent);
 			break;
 		}
 	}

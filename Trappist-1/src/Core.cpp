@@ -129,8 +129,9 @@ Core::Core()
 	windowSize = createWindow();
 	//scene = new Scene();
 	TexturePacker::packFolder("res/textures/tiles", "res/textures", "tiles", 128, 128);
+	TexturePacker::packFolder("res/textures/system", "res/textures", "system", 300, 700);
 	font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
-	changeScene(SceneType::MENU);
+	changeScene(SceneType::GAME);
 }
 
 Core::~Core() 
@@ -177,7 +178,7 @@ void Core::run()
 	renderer2d.setShader(&shader2d);
 	renderer2d.setFontShader(&fontShader);
 
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	while (running)
 	{

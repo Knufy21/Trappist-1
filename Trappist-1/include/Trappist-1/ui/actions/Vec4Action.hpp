@@ -9,9 +9,9 @@ namespace ui
 	{
 		typedef glm::vec4 T;
 	public:
-		enum class Type : unsigned char { RGBA_TO, RGBA_BY };
+		enum class Type : unsigned char { RGBA_TO, RGBA_BY, TEXT_RGBA_TO, TEXT_RGBA_BY, TEXT_OUTLINE_RGBA_TO, TEXT_OUTLINE_RGBA_BY };
 
-		// Erstellt eine 'Vec3Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
+		// Erstellt eine 'Vec4Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
 		Vec4Action(Type type, const T &value, float duration, const Interpolation &interpolation = Interpolation::linear);
 
 		// Destruktor
