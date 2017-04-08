@@ -13,6 +13,7 @@ class Renderer2D
 	{
 		VertexPCT2D vertex;
 		float textureSlot;
+		float depth;
 	};
 
 	struct VertexBuffer
@@ -45,6 +46,7 @@ class Renderer2D
 	static constexpr GLuint VERTEX_ATTRIB_LOCATION_VERTEX_COLOR			=	1;
 	static constexpr GLuint VERTEX_ATTRIB_LOCATION_VERTEX_TEXCOORD		=	2;
 	static constexpr GLuint VERTEX_ATTRIB_LOCATION_VERTEX_TEXTURE_SLOT	=	3;
+	static constexpr GLuint VERTEX_ATTRIB_LOCATION_VERTEX_DEPTH			=	4;
 	// Textures
 	static constexpr size_t TEXTURE_SLOT_COUNT							=	32;
 	static constexpr float TEXTURE_SLOT_INDEX_NO_TEXTURE				=	0.0f;
@@ -71,13 +73,13 @@ public:
 	void begin();
 
 	// Submits the given vertices and indices into the render cache.
-	void submit(const VertexPCT2D *vertices, GLuint vertexCount, const ELEMENT_INDEX_GL_TYPE *indices, GLuint indexCount, const Texture *texture = nullptr);
+	void submit(const VertexPCT2D *vertices, GLuint vertexCount, const ELEMENT_INDEX_GL_TYPE *indices, GLuint indexCount, const Texture *texture = nullptr, float depth = 0.0f);
 
 	// Submits the 4 given vertices into the render cache.
-	void submit4(const VertexPCT2D *vertices, const Texture *texture = nullptr);
+	void submit4(const VertexPCT2D *vertices, const Texture *texture = nullptr, float depth = 0.0f);
 
 	// Submits the 16 given vertices into the render cache.
-	void submit16(const VertexPCT2D *vertices, const Texture *texture = nullptr);
+	void submit16(const VertexPCT2D *vertices, const Texture *texture = nullptr, float depth = 0.0f);
 
 	// Submits the given text into the font render cache.
 	//void submitText(const Text &text);

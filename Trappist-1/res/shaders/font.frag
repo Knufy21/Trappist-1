@@ -33,13 +33,24 @@ void main()
 	float dist2 = texture(textures[int(fragTextureID)], fragTexCoord + outlineOffset).a;
 
 	// Letter alpha
-    float alpha = smoothstep(characterThickness - edge, characterThickness + edge, dist);
+    //float alpha = smoothstep(characterThickness - edge, characterThickness + edge, dist);
+	float alpha = smoothstep(characterThickness, characterThickness, dist);
 
 	// Outline alpha
-	float alpha2 = smoothstep(outlineThickness - outlineEdge, outlineThickness + outlineEdge, dist);
+	//float alpha2 = smoothstep(outlineThickness - outlineEdge, outlineThickness + outlineEdge, dist);
+	float alpha2 = smoothstep(outlineThickness, outlineThickness, dist);
 
 	float overallAlpha = alpha + (1.0f - alpha) * alpha2;
 	vec4 overallColor = mix(outlineColor, color, alpha / alpha2);
-	
+
+	// Real line of code
 	rcolor = vec4(overallColor.rgb, overallAlpha * overallColor.a);
+
+	// Testing
+	//float a = overallAlpha * overallColor.a;
+	//if(a < 1.0f)
+	//	rcolor = vec4(1.0f, 1.0f, 0.0f, 0.0f);
+	//else
+	//	
+	//	rcolor = vec4(overallColor.rgb, a);
 }

@@ -4,6 +4,7 @@
 
 enum ComponentType
 {
+	ANIMATOR,
 	COLLIDER,
 	HEALTH,
 	MOVEMENT,
@@ -22,8 +23,11 @@ public:
 	// Updates the Component.
 	virtual void update(){}
 
+	// Gets called after the entities moved.
+	virtual void onMove(glm::vec2 &movement) { }
+
 	// Gets called when the entities tries to move. The bool returned can deny this if returning false.
-	virtual bool onMove(glm::vec2 &movement) { return true; }
+	virtual bool canMove(glm::vec2 &movement) { return true; }
 
 	// Gets called when the entities collides with another collider and returns whether it can pass. May be called twice per collision! :(
 	virtual bool onCollision(Collider *other) { return false; }

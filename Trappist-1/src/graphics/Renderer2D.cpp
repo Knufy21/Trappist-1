@@ -86,7 +86,7 @@ void Renderer2D::begin()
 	fontIndexBuffer = indexBuffer + Renderer2D::FONT_INDEX_BUFFER_OFFSET;
 }
 
-void Renderer2D::submit(const VertexPCT2D *vertices, GLuint vertexCount, const ELEMENT_INDEX_GL_TYPE *indices, GLuint indexCount, const Texture *texture)
+void Renderer2D::submit(const VertexPCT2D *vertices, GLuint vertexCount, const ELEMENT_INDEX_GL_TYPE *indices, GLuint indexCount, const Texture *texture, float depth)
 {
 	float textureSlot = submitTexture(texture);
 
@@ -95,8 +95,9 @@ void Renderer2D::submit(const VertexPCT2D *vertices, GLuint vertexCount, const E
 		vertexBuffer->vertexData.vertex = vertices[i];
 		vertexBuffer->vertexData.textureSlot = textureSlot;
 		glm::vec2 pos = this->offset + glm::vec2(transformationStack[transformationStackTop] * glm::vec3(vertices[i].position.x, vertices[i].position.y, 1.0f));
-		vertexBuffer->vertexData.vertex.position.x = ((pos.x / viewport[2]) - 0.5f) * 2.0f;
-		vertexBuffer->vertexData.vertex.position.y = ((pos.y / viewport[3]) - 0.5f) * -2.0f;
+		vertexBuffer->vertexData.vertex.position.x = ((pos.x / static_cast<float>(viewport[2])) - 0.5f) * 2.0f;
+		vertexBuffer->vertexData.vertex.position.y = ((pos.y / static_cast<float>(viewport[3])) - 0.5f) * -2.0f;
+		vertexBuffer->vertexData.depth = depth;
 		++vertexBuffer;
 	}
 
@@ -119,7 +120,7 @@ void Renderer2D::submit(const VertexPCT2D *vertices, GLuint vertexCount, const E
 //	submit(mesh.vertices.data(), mesh.vertices.size(), mesh.indices.data(), mesh.indices.size(), texture);
 //}
 
-void Renderer2D::submit4(const VertexPCT2D *vertices, const Texture *texture)
+void Renderer2D::submit4(const VertexPCT2D *vertices, const Texture *texture, float depth)
 {
 	float textureSlot = submitTexture(texture);
 
@@ -127,9 +128,11 @@ void Renderer2D::submit4(const VertexPCT2D *vertices, const Texture *texture)
 	{
 		vertexBuffer->vertexData.vertex = vertices[i];
 		vertexBuffer->vertexData.textureSlot = textureSlot;
-		glm::vec2 pos = this->offset + glm::vec2(transformationStack[transformationStackTop] * glm::vec3(vertices[i].position.x, vertices[i].position.y, 1.0f));
-		vertexBuffer->vertexData.vertex.position.x = ((pos.x / viewport[2]) - 0.5f) * 2.0f;
-		vertexBuffer->vertexData.vertex.position.y = ((pos.y / viewport[3]) - 0.5f) * -2.0f;
+		glm::vec3 pos = /*this->offset + */(transformationStack[transformationStackTop] * glm::vec3(vertices[i].position.x, vertices[i].position.y, 1.0f));
+		// pixel data can be castet to int because of floating points are inaccurat
+		vertexBuffer->vertexData.vertex.position.x = ((static_cast<float>(static_cast<int>(pos.x)) / static_cast<float>(viewport[2])) - 0.5f) * 2.0f;
+		vertexBuffer->vertexData.vertex.position.y = ((static_cast<float>(static_cast<int>(pos.y)) / static_cast<float>(viewport[3])) - 0.5f) * -2.0f;
+		vertexBuffer->vertexData.depth = depth;
 		++vertexBuffer;
 	}
 
@@ -154,7 +157,7 @@ void Renderer2D::submit4(const VertexPCT2D *vertices, const Texture *texture)
 	//scissors.push_back(scissorStack[scissorStackTop]);
 }
 
-void Renderer2D::submit16(const VertexPCT2D *vertices, const Texture *texture)
+void Renderer2D::submit16(const VertexPCT2D *vertices, const Texture *texture, float depth)
 {
 	float textureSlot = submitTexture(texture);
 
@@ -163,8 +166,9 @@ void Renderer2D::submit16(const VertexPCT2D *vertices, const Texture *texture)
 		vertexBuffer->vertexData.vertex = vertices[i];
 		vertexBuffer->vertexData.textureSlot = textureSlot;
 		glm::vec2 pos = this->offset + glm::vec2(transformationStack[transformationStackTop] * glm::vec3(vertices[i].position.x, vertices[i].position.y, 1.0f));
-		vertexBuffer->vertexData.vertex.position.x = ((pos.x / viewport[2]) - 0.5f) * 2.0f;
-		vertexBuffer->vertexData.vertex.position.y = ((pos.y / viewport[3]) - 0.5f) * -2.0f;
+		vertexBuffer->vertexData.vertex.position.x = ((static_cast<float>(static_cast<int>(pos.x)) / static_cast<float>(viewport[2])) - 0.5f) * 2.0f;
+		vertexBuffer->vertexData.vertex.position.y = ((static_cast<float>(static_cast<int>(pos.y)) / static_cast<float>(viewport[3])) - 0.5f) * -2.0f;
+		vertexBuffer->vertexData.depth = depth;
 		++vertexBuffer;
 	}
 
@@ -320,8 +324,8 @@ void Renderer2D::submit16(const VertexPCT2D *vertices, const Texture *texture)
 //		fontVertexBuffer->vertexData.vertex = text.getVertices()[i];
 //		fontVertexBuffer->vertexData.textureSlot = fontAtlasSlot;
 //		glm::vec2 pos = this->offset + glm::vec2(transformationStack[transformationStackTop] * glm::vec3(text.getVertices()[i].position.x, text.getVertices()[i].position.y, 1.0f));
-//		fontVertexBuffer->vertexData.vertex.position.x = ((pos.x / viewport[2]) - 0.5f) * 2.0f;
-//		fontVertexBuffer->vertexData.vertex.position.y = ((pos.y / viewport[3]) - 0.5f) * -2.0f;
+//		fontVertexBuffer->vertexData.vertex.position.x = ((static_cast<float>(static_cast<int>(pos.x)) / viewport[2]) - 0.5f) * 2.0f;
+//		fontVertexBuffer->vertexData.vertex.position.y = ((static_cast<float>(static_cast<int>(pos.y)) / viewport[3]) - 0.5f) * -2.0f;
 //		++fontVertexBuffer;
 //	}
 //
@@ -348,8 +352,8 @@ void Renderer2D::submitLabel(const ui::Label &label)
 		fontVertexBuffer->vertexData.vertex = label.getTextVertices()[i];
 		fontVertexBuffer->vertexData.textureSlot = fontAtlasSlot;
 		glm::vec2 pos = this->offset + glm::vec2(transformationStack[transformationStackTop] * glm::vec3(label.getTextVertices()[i].position.x, label.getTextVertices()[i].position.y, 1.0f));
-		fontVertexBuffer->vertexData.vertex.position.x = ((pos.x / viewport[2]) - 0.5f) * 2.0f;
-		fontVertexBuffer->vertexData.vertex.position.y = ((pos.y / viewport[3]) - 0.5f) * -2.0f;
+		fontVertexBuffer->vertexData.vertex.position.x = ((static_cast<float>(static_cast<int>(pos.x)) / static_cast<float>(viewport[2])) - 0.5f) * 2.0f;
+		fontVertexBuffer->vertexData.vertex.position.y = ((static_cast<float>(static_cast<int>(pos.y)) / static_cast<float>(viewport[3])) - 0.5f) * -2.0f;
 		++fontVertexBuffer;
 	}
 
@@ -380,7 +384,7 @@ void Renderer2D::end()
 
 void Renderer2D::flush()
 {
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	//glEnable(GL_SCISSOR_TEST);
 
@@ -452,7 +456,7 @@ void Renderer2D::flush()
 	//(GL_TRIANGLES, fontIndexCount, RENDERER2D_ELEMENT_INDEX_GL_MACRO_TYPE, reinterpret_cast<void*>(RENDERER2D_FONT_INDEX_BUFFER_OFFSET * sizeof(RENDERER2D_ELEMENT_INDEX_GL_MACRO_TYPE)));
 	glBindVertexArray(0);
 
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	//glDisable(GL_SCISSOR_TEST);
 }
@@ -522,16 +526,19 @@ float Renderer2D::submitFontAtlas(const Texture *texture)
 void Renderer2D::setVertexDataAttribLocations()
 {
 	glEnableVertexAttribArray(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_POSITION);
-	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.position)));
+	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_POSITION, sizeof(vertexBuffer->vertexData.vertex.position) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.position)));
 
 	glEnableVertexAttribArray(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_COLOR);
-	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.color)));
+	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_COLOR, sizeof(vertexBuffer->vertexData.vertex.color) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.color)));
 
 	glEnableVertexAttribArray(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_TEXCOORD);
-	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.texCoord)));
+	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_TEXCOORD, sizeof(vertexBuffer->vertexData.vertex.texCoord) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.vertex.texCoord)));
 
 	glEnableVertexAttribArray(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_TEXTURE_SLOT);
 	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_TEXTURE_SLOT, 1, GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.textureSlot)));
+
+	glEnableVertexAttribArray(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_DEPTH);
+	glVertexAttribPointer(Renderer2D::VERTEX_ATTRIB_LOCATION_VERTEX_DEPTH, 1, GL_FLOAT, GL_FALSE, sizeof(VertexBuffer), (GLvoid*)(offsetof(VertexBuffer, vertexData.depth)));
 }
 
 void Renderer2D::pushMatrix(const glm::mat3 &matrix)

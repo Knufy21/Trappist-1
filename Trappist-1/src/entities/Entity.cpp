@@ -1,6 +1,9 @@
-#include <Trappist-1\entities\Entity.hpp>
+#include <Trappist-1\Entities\Entity.hpp>
 #include <Trappist-1\Components.hpp>
-#include <Trappist-1\graphics\Renderer2D.hpp>
+#include <Trappist-1\Graphics\Renderer2D.hpp>
+#include <Trappist-1\World.hpp>
+
+#include <iostream>
 
 Entity::Entity()
 	: texture(nullptr), dead(false)
@@ -31,7 +34,8 @@ void Entity::update()
 void Entity::render(Renderer2D &renderer2d)
 {
 	renderer2d.pushMatrix(getTransform());
-	renderer2d.submit4(vertices, texture);
+	renderer2d.submit4(vertices, texture, getPosition().y / -World::HALF_HEIGHT_F);
+	//std::cout << "depth: " << getPosition().y / World::HALF_HEIGHT_F << "\n";
 	renderer2d.popMatrix();
 }
 
@@ -101,7 +105,7 @@ bool Entity::move(glm::vec2 &movement)
 	{
 		if (hasComponent(ComponentType(i)))
 		{
-			if (!components[i]->onMove(movement))
+			if (!components[i]->canMove(movement))
 			{
 				f = false;
 			}
@@ -111,6 +115,14 @@ bool Entity::move(glm::vec2 &movement)
 	if (f)
 	{
 		translate(movement);
+
+		for (int i = 0; i < ComponentType::COMPONENTCOUNT; i++)
+		{
+			if (hasComponent(ComponentType(i)))
+			{
+				components[i]->onMove(movement);
+			}
+		}
 	}
 
 	return f;

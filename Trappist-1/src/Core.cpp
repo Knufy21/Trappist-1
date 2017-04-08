@@ -130,7 +130,9 @@ Core::Core()
 	//scene = new Scene();
 	TexturePacker::packFolder("res/textures/tiles", "res/textures", "tiles", 128, 128);
 	TexturePacker::packFolder("res/textures/system", "res/textures", "system", 300, 700);
-	font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
+	TexturePacker::packFolder("res/textures/entities/shadow-slime", "res/textures/entities", "shadow-slime", 128, 128);
+	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
+	//font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
 	changeScene(SceneType::GAME);
 }
 
@@ -155,6 +157,7 @@ void Core::run()
 	}
 
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	running = true;
@@ -179,6 +182,8 @@ void Core::run()
 	renderer2d.setFontShader(&fontShader);
 
 	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	Timer testTimer;
 
 	while (running)
 	{
@@ -225,9 +230,11 @@ void Core::run()
 		scene->update();
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		renderer2d.begin();
+		testTimer.reset();
 		scene->render(renderer2d);
+		//std::cout << "Rendering took: " << testTimer.elapsedSeconds() << std::endl;
 		renderer2d.end();
 		renderer2d.flush();
 
@@ -237,21 +244,20 @@ void Core::run()
 		if (secondTimer.elapsedSeconds() >= 1.0f)
 		{
 			secondTimer.reset();
-			std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
+			//std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
 			countedFPS = 0;
 		}
 	}
-
 }
 
-sf::Vector2i Core::createWindow() 
+sf::Vector2i Core::createWindow()
 {
 	//sf::VideoMode bestMode = sf::VideoMode::getFullscreenModes().front();
 	//sf::Vector2i size(bestMode.width, bestMode.height);
 	//window = new sf::Window(bestMode, "Trappist-1", sf::Style::Fullscreen);
 
 	sf::Vector2i size(800, 480);
-	window = new sf::Window(sf::VideoMode(size.x, size.y), "Trappist-1");
+	window = new sf::Window(sf::VideoMode(size.x, size.y), "Trappist-1", 7u, sf::ContextSettings(8));
 	//window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 	window->setActive();

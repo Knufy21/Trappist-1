@@ -19,4 +19,7 @@ void main()
 		color = fragColor;
 	else
 		color = fragColor * texture(textures[int(fragTextureID)], fragTexCoord);
+
+	if(color.a == 0.0f)
+		discard;
 }

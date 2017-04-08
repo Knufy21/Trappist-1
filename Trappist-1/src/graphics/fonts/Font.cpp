@@ -18,6 +18,7 @@
 	{
 		bool result = false;
 		textureAtlas.load(atlasFileName);
+		textureAtlas.setSmooth(false);
 		loadFontFile(fontFileName);
 
 		return result;
@@ -107,7 +108,7 @@
 
 			if (keyValuePair[0] == "size")
 			{
-				size = std::stoul(keyValuePair[1]) - 8; // TODO: check why -8
+				size = std::stoul(keyValuePair[1]) - 3; // TODO: check why -8
 			}
 			else if (keyValuePair[0] == "padding")
 			{

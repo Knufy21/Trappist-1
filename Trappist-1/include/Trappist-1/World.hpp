@@ -26,6 +26,9 @@ namespace World
 	static constexpr float WIDTH_F = static_cast<float>(WIDTH);
 	static constexpr float HEIGHT_F = static_cast<float>(HEIGHT);
 
+	static constexpr float HALF_WIDTH_F = WIDTH_F * 0.5f;
+	static constexpr float HALF_HEIGHT_F = HEIGHT_F * 0.5f;
+
 	static constexpr int TILE_COUNT = TILE_WIDTH * TILE_HEIGHT;
 
 	// Updates all Entities

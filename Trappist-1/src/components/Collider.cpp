@@ -1,5 +1,5 @@
-#include <Trappist-1\components\Collider.hpp>
-#include <Trappist-1\entities\Entity.hpp>
+#include <Trappist-1\Components\Collider.hpp>
+#include <Trappist-1\Entities\Entity.hpp>
 #include <Trappist-1\CollisionDetector.hpp>
 
 Collider::Collider(Entity *entity, float radius) : Component(entity)
@@ -23,7 +23,12 @@ void Collider::update()
 	position = entity->getPosition();
 }
 
-bool Collider::onMove(glm::vec2 &movement)
+void Collider::onMove(glm::vec2 &movement)
+{
+	position = entity->getPosition();
+}
+
+bool Collider::canMove(glm::vec2 &movement)
 {
 	bool f = true;
 

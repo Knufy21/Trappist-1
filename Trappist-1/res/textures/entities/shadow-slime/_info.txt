@@ -1,0 +1,7 @@
+6
+shadow-slime-back-01
+shadow-slime-back-02
+shadow-slime-front-01
+shadow-slime-front-02
+shadow-slime-side-01
+shadow-slime-side-02

@@ -11,6 +11,8 @@
 #include <iostream>
 #include <Trappist-1\Components.hpp>
 
+#include <Trappist-1\animation\AnimationSheetManager.hpp>
+
 SceneGame::SceneGame()
 {
 	type = SceneType::GAME;
@@ -32,27 +34,6 @@ SceneGame::SceneGame()
 		}
 	}
 
-	Entity *e1 = new Entity;
-	e1->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
-	e1->setPosition(-static_cast<float>(World::TILE_WIDTH * World::TILE_PIXEL_WIDTH) * 0.5f, -static_cast<float>(World::TILE_HEIGHT * World::TILE_PIXEL_HEIGHT) * 0.5f);
-	e1->setOrigin(e1->getSize() * 0.5f);
-	e1->setTexture(&testTexture);
-	World::addEntity(e1);
-
-	Entity *e2 = new Entity;
-	e2->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
-	e2->setPosition(static_cast<float>(World::TILE_WIDTH * World::TILE_PIXEL_WIDTH) * 0.5f, -static_cast<float>(World::TILE_HEIGHT * World::TILE_PIXEL_HEIGHT) * 0.5f);
-	e2->setOrigin(e2->getSize() * 0.5f);
-	e2->setTexture(&testTexture);
-	World::addEntity(e2);
-
-	Entity *e3 = new Entity;
-	e3->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
-	e3->setPosition(-static_cast<float>(World::TILE_WIDTH * World::TILE_PIXEL_WIDTH) * 0.5f, static_cast<float>(World::TILE_HEIGHT * World::TILE_PIXEL_HEIGHT) * 0.5f);
-	e3->setOrigin(e3->getSize() * 0.5f);
-	e3->setTexture(&testTexture);
-	World::addEntity(e3);
-
 	Entity *e4 = new Entity;
 	e4->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
 	e4->setPosition(100.0f, 300.0f);
@@ -60,6 +41,9 @@ SceneGame::SceneGame()
 	e4->setTexture(&testTexture);
 	//e4->addComponent(new Collider(e4, glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT)));
 	e4->addComponent(new Collider(e4, World::TILE_PIXEL_WIDTH * 0.4f));
+	e4->addComponent(new Movement(e4));
+	static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->setDesiredDirection(200);
+	static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->maxSpeed = 0.2f;
 	World::addEntity(e4);
 
 	player = new Player;
@@ -69,6 +53,19 @@ SceneGame::SceneGame()
 	player->addComponent(new Collider(player, World::TILE_PIXEL_WIDTH * 0.4f));
 	player->addComponent(new Movement(player));
 	World::addEntity(player);
+
+	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::SHADOW_SLIME, TextureManager::TextureHandles::ANIMATION_SHEET_SHADOW_SLIME, "res/textures/entities/shadow-slime.asi");
+	Entity *e1 = new Entity;
+	e1->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT));
+	e1->setPosition(-100.0f, -300.0f);
+	e1->setOrigin(glm::vec2(e1->getSize().x * 0.5f, e1->getSize().y * 0.5f));
+	e1->setTexture(AnimationSheetManager::get(AnimationSheetManager::AnimationSheetHandles::SHADOW_SLIME)->getTexture());
+	//e1->addComponent(new Collider(e1, World::TILE_PIXEL_WIDTH * 0.4f));
+	//e1->addComponent(new Movement(e1));
+	e1->addComponent(new Animator(e1, AnimationSheetManager::AnimationSheetHandles::SHADOW_SLIME));
+	//static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->setDesiredDirection(200);
+	//static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->maxSpeed = 3;
+	World::addEntity(e1);
 
 	World::camera.setOrigin(Core::windowSize.x * 0.5f, Core::windowSize.y * 0.5f);
 }
@@ -97,6 +94,9 @@ void SceneGame::render(Renderer2D &renderer2d)
 	renderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
 
 	// Render tiles
+
+	//Timer t;
+	//Timer::time_t time = 0.0f;
 	VertexPCT2D tileVertices[4];
 	const Tile *currTile;
 	for (int y = 0; y < World::TILE_HEIGHT; ++y)
@@ -109,17 +109,17 @@ void SceneGame::render(Renderer2D &renderer2d)
 			{
 				// positions
 
-				tileVertices[0].position.x = x * World::TILE_PIXEL_WIDTH_F - World::WIDTH_F * 0.5f;
-				tileVertices[0].position.y = y * World::TILE_PIXEL_HEIGHT_F - World::HEIGHT_F * 0.5f;
+				tileVertices[0].position.x = x * World::TILE_PIXEL_WIDTH_F - World::HALF_WIDTH_F;
+				tileVertices[0].position.y = y * World::TILE_PIXEL_HEIGHT_F - World::HALF_HEIGHT_F;
 
-				tileVertices[1].position.x = x * World::TILE_PIXEL_WIDTH_F - World::WIDTH_F * 0.5f;
-				tileVertices[1].position.y = y * World::TILE_PIXEL_HEIGHT_F + World::TILE_PIXEL_HEIGHT - World::HEIGHT_F * 0.5f;
+				tileVertices[1].position.x = x * World::TILE_PIXEL_WIDTH_F - World::HALF_WIDTH_F;
+				tileVertices[1].position.y = y * World::TILE_PIXEL_HEIGHT_F + World::TILE_PIXEL_HEIGHT_F - World::HALF_HEIGHT_F;
 
-				tileVertices[3].position.x = x * World::TILE_PIXEL_WIDTH_F + World::TILE_PIXEL_WIDTH - World::WIDTH_F * 0.5f;
-				tileVertices[3].position.y = y * World::TILE_PIXEL_HEIGHT_F - World::HEIGHT_F * 0.5f;
+				tileVertices[3].position.x = x * World::TILE_PIXEL_WIDTH_F + World::TILE_PIXEL_WIDTH_F - World::HALF_WIDTH_F;
+				tileVertices[3].position.y = y * World::TILE_PIXEL_HEIGHT_F - World::HALF_HEIGHT_F;
 
-				tileVertices[2].position.x = x * World::TILE_PIXEL_WIDTH_F + World::TILE_PIXEL_WIDTH - World::WIDTH_F * 0.5f;
-				tileVertices[2].position.y = y * World::TILE_PIXEL_HEIGHT_F + World::TILE_PIXEL_HEIGHT - World::HEIGHT_F * 0.5f;
+				tileVertices[2].position.x = x * World::TILE_PIXEL_WIDTH_F + World::TILE_PIXEL_WIDTH_F - World::HALF_WIDTH_F;
+				tileVertices[2].position.y = y * World::TILE_PIXEL_HEIGHT_F + World::TILE_PIXEL_HEIGHT_F - World::HALF_HEIGHT_F;
 
 				// tex coords
 
@@ -142,10 +142,13 @@ void SceneGame::render(Renderer2D &renderer2d)
 				tileVertices[2].color = currTile->color;
 				tileVertices[3].color = currTile->color;
 
-				renderer2d.submit4(tileVertices, TextureManager::get(TextureManager::TextureHandles::TILE_ATLAS)->getTexture());
+				//Timer t2;
+				renderer2d.submit4(tileVertices, TextureManager::get(TextureManager::TextureHandles::TILE_ATLAS)->getTexture(), 0.99f);
+				//time += t2.elapsedSeconds();
 			}
 		}
 	}
+	//std::cout << "Timer took: " << t.elapsedSeconds()/* - time*/ << std::endl;
 
 	for (auto it = World::entities.begin(); it != World::entities.end(); ++it)
 		(*it)->render(renderer2d);
@@ -155,13 +158,12 @@ void SceneGame::render(Renderer2D &renderer2d)
 
 void SceneGame::onSizeChanged(unsigned int width, unsigned int height)
 {
-	World::camera.setOrigin(width * 0.5f, height * 0.5f);
+	World::camera.setOrigin(static_cast<float>(width) * 0.5f, static_cast<float>(height) * 0.5f);
 }
 
 void SceneGame::playerMovement()
 {
-	static constexpr float speed = 300.0f;
-	/*
+	/*static constexpr float speed = 300.0f;
 	if (Input::getKeyPressed(sf::Keyboard::A))
 	{
 		player->translate(Time::deltaTime * -speed, 0);
@@ -182,7 +184,7 @@ void SceneGame::playerMovement()
 	if (player->hasComponent(ComponentType::MOVEMENT))
 	{
 		Movement *movement = static_cast<Movement*>(player->getComponent(ComponentType::MOVEMENT));
-		bool w = Input::getKeyPressed(sf::Keyboard::W);
+		/*bool w = Input::getKeyPressed(sf::Keyboard::W);
 		bool a = Input::getKeyPressed(sf::Keyboard::A);
 		bool s = Input::getKeyPressed(sf::Keyboard::S);
 		bool d = Input::getKeyPressed(sf::Keyboard::D);
@@ -227,13 +229,30 @@ void SceneGame::playerMovement()
 		else
 		{
 			movement->desireStop();
-		}
+		}*/
+
+		glm::vec2 dir;
+		if (Input::getKeyPressed(sf::Keyboard::W))
+			dir.y = -1.0f;
+		else if (Input::getKeyPressed(sf::Keyboard::S))
+			dir.y = 1.0f;
+
+		if (Input::getKeyPressed(sf::Keyboard::A))
+			dir.x = -1.0f;
+		else if (Input::getKeyPressed(sf::Keyboard::D))
+			dir.x = 1.0f;
+
+		if (dir.x == 0.0f && dir.y == 0.0f)
+			movement->desireStop();
+		else
+			movement->setDesiredDirection(dir);
 
 	}
+
 	World::camera.setPosition(glm::clamp(player->getPosition().x, World::getLeftBorder(static_cast<float>(Core::windowSize.x)), World::getRightBorder(static_cast<float>(Core::windowSize.x))),
 		glm::clamp(player->getPosition().y, World::getBottomBorder(static_cast<float>(Core::windowSize.y)), World::getTopBorder(static_cast<float>(Core::windowSize.y))));
 
-	std::cout << "x: " << player->getPosition().x << " y: " << player->getPosition().y << "\n";
+	//std::cout << "x: " << player->getPosition().x << " y: " << player->getPosition().y << "\n";
 }
 
 void SceneGame::inputUpdate()

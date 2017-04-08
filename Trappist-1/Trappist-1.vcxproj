@@ -19,8 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Trappist-1\animation\Animation.hpp" />
+    <ClInclude Include="include\Trappist-1\animation\AnimationSheet.hpp" />
+    <ClInclude Include="include\Trappist-1\animation\AnimationSheetManager.hpp" />
     <ClInclude Include="include\Trappist-1\CollisionDetector.hpp" />
     <ClInclude Include="include\Trappist-1\Components.hpp" />
+    <ClInclude Include="include\Trappist-1\components\Animator.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Collider.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Component.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Health.hpp" />
@@ -39,6 +43,7 @@
     <ClInclude Include="include\Trappist-1\Graphics\Texture.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Transform2D.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Vertex2D.hpp" />
+    <ClInclude Include="include\Trappist-1\NetworkManager.hpp" />
     <ClInclude Include="include\Trappist-1\Scenes.hpp" />
     <ClInclude Include="include\Trappist-1\scenes\SceneMenu.hpp" />
     <ClInclude Include="include\Trappist-1\Scenes\Scene.hpp" />
@@ -93,7 +98,10 @@
     <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\animation\AnimationSheet.cpp" />
+    <ClCompile Include="src\animation\AnimationSheetManager.cpp" />
     <ClCompile Include="src\CollisionDetector.cpp" />
+    <ClCompile Include="src\components\Animator.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\Health.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />

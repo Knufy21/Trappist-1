@@ -6,9 +6,14 @@ namespace TextureManager
 {
 	std::vector<TextureAtlas> textures(TextureHandles::COUNT);
 
-	void load(TextureHandle handle, const char *path)
+	void load(TextureHandle handle, const char *fileName)
 	{
-		textures[handle].load(path);
+		textures[handle].load(fileName);
+	}
+
+	void load(TextureHandle handle, const std::string &fileName)
+	{
+		textures[handle].load(fileName.c_str());
 	}
 
 	void unload(TextureHandle handle)

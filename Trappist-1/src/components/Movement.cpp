@@ -61,6 +61,12 @@ void Movement::setDesiredDirection(float angle)
 	stop = false;
 }
 
+void Movement::setDesiredDirection(const glm::vec2 &direction)
+{
+	desiredDirection = glm::normalize(direction);
+	stop = false;
+}
+
 void Movement::desireStop()
 {
 	stop = true;

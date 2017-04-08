@@ -1,0 +1,10 @@
+shadow-slime.png
+16x16
+IdleFront:2-3-0.5-0-0-0-0
+IdleBack:0-1-0.5-0-0-0-0
+IdleRight:4-5-0.5-1-0-0-0
+IdleLeft:4-5-0.5-0-0-0-0
+MoveFront:2-3-0.5-0-0-0-0
+MoveBack:0-1-0.5-0-0-0-0
+MoveRight:4-5-0.5-1-0-0-0
+MoveLeft:4-5-0.5-0-0-0-0
