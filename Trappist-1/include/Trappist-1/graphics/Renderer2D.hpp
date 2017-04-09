@@ -69,6 +69,8 @@ public:
 	// Pops the top matrix from the transformation stack.
 	void popMatrix();
 
+	void setLightMap(GLuint texture);
+
 	// Begins the submition (Maps the vertex-&indexbuffer).
 	void begin();
 
@@ -122,6 +124,8 @@ private:
 
 	Shader *shader;
 	Shader *fontShader;
+
+	GLuint lightMap;
 
 	//std::vector<const Text *> texts;
 	std::vector<const ui::Label *> labels;

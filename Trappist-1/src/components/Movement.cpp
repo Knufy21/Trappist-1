@@ -1,6 +1,7 @@
 #include <Trappist-1\components\Movement.hpp>
 #include <Trappist-1\entities\Entity.hpp>
 #include <Trappist-1\util\Time.hpp>
+#include <Trappist-1\components\Animator.hpp>
 
 Movement::Movement(Entity *entity) : Component(entity)
 {
@@ -63,11 +64,43 @@ void Movement::setDesiredDirection(float angle)
 
 void Movement::setDesiredDirection(const glm::vec2 &direction)
 {
-	desiredDirection = glm::normalize(direction);
+	glm::vec2 newDirection = glm::normalize(direction);
+	if (newDirection != desiredDirection || stop)
+	{
+		if (entity->hasComponent(ComponentType::ANIMATOR))
+		{
+			if (newDirection.x > 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("MoveRight");
+			else if (newDirection.x < 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("MoveLeft");
+
+			bool walkY = true;
+			if (newDirection.y > 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("MoveFront");
+			else if (newDirection.y < 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("MoveBack");				
+		}
+	}
+	desiredDirection = newDirection;
+
 	stop = false;
 }
 
 void Movement::desireStop()
 {
 	stop = true;
+
+	if (entity->hasComponent(ComponentType::ANIMATOR))
+	{
+		if (desiredDirection.x > 0.0f)
+			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleRight");
+		else if (desiredDirection.x < 0.0f)
+			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleLeft");
+
+		bool walkY = true;
+		if (desiredDirection.y > 0.0f)
+			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleFront");
+		else if (desiredDirection.y < 0.0f)
+			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleBack");
+	}
 }

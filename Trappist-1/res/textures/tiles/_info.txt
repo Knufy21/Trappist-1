@@ -1,8 +1,0 @@
-7
-dirt
-grass
-parquet-bright
-parquet-dark
-sand
-stone
-stone-plate

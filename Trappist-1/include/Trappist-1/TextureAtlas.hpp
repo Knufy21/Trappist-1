@@ -10,10 +10,13 @@
 class TextureAtlas
 {
 public:
+
 	TextureAtlas();
 
 	// Loads the texture altas with the specified file name without extension and returns true if it has been successful.
 	bool load(const char *fileName);
+
+	bool load2(const char *fileName);
 
 	// Unloads the texture and clears the texCoords.
 	void unload();

@@ -46,12 +46,15 @@ SceneGame::SceneGame()
 	static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->maxSpeed = 0.2f;
 	World::addEntity(e4);
 
+	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/player-test.asi");
 	player = new Player;
-	player->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
-	player->setTexture(&testTexture);
+	player->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 1));
+	//player->setTexture(&testTexture);
+	player->setTexture(AnimationSheetManager::get(AnimationSheetManager::AnimationSheetHandles::PLAYER)->getTexture());
 	player->setOrigin(glm::vec2(player->getSize().x * 0.5f, player->getSize().y * 0.75f));
 	player->addComponent(new Collider(player, World::TILE_PIXEL_WIDTH * 0.4f));
 	player->addComponent(new Movement(player));
+	player->addComponent(new Animator(player, AnimationSheetManager::AnimationSheetHandles::PLAYER));
 	World::addEntity(player);
 
 	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::SHADOW_SLIME, TextureManager::TextureHandles::ANIMATION_SHEET_SHADOW_SLIME, "res/textures/entities/shadow-slime.asi");
@@ -243,7 +246,10 @@ void SceneGame::playerMovement()
 			dir.x = 1.0f;
 
 		if (dir.x == 0.0f && dir.y == 0.0f)
-			movement->desireStop();
+		{
+			if(movement->velocity.x != 0 || movement->velocity.y != 0)
+				movement->desireStop();
+		}
 		else
 			movement->setDesiredDirection(dir);
 

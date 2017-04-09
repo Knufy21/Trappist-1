@@ -11,6 +11,7 @@ namespace AnimationSheetManager
 	enum AnimationSheetHandles : AnimationSheetHandle
 	{
 		SHADOW_SLIME,
+		PLAYER,
 		COUNT
 	};
 

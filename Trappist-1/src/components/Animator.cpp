@@ -66,7 +66,19 @@ void Animator::ensureStateUpdate()
 {
 	if (bools.get(Animator::BOOL_ARRAY_NEEDS_UPDATE))
 	{
-		entity->setTextureRect(animationSheet->getTextureRectByState(getState()));
+		sf::FloatRect rect = animationSheet->getTextureRectByState(getState());
+		if (animation->isFlippedHorizontally())
+		{
+			rect.left += rect.width;
+			rect.width = -rect.width;
+		}
+		if (animation->isFlippedVertically())
+		{
+			rect.top += rect.height;
+			rect.height = -rect.height;
+		}
+
+		entity->setTextureRect(rect);
 
 		bools.off(Animator::BOOL_ARRAY_NEEDS_UPDATE);
 	}

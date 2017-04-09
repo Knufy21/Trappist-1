@@ -11,6 +11,10 @@
 #include <Trappist-1\util\TexturePacker.hpp>
 #include <Trappist-1\TextureAtlas.hpp>
 
+#include <Trappist-1\graphics\light\LightRenderer2D.hpp>
+
+#include <Trappist-1\World.hpp>
+
 //#define TESTING
 #ifdef TESTING
 
@@ -128,9 +132,10 @@ Core::Core()
 {
 	windowSize = createWindow();
 	//scene = new Scene();
-	TexturePacker::packFolder("res/textures/tiles", "res/textures", "tiles", 128, 128);
-	TexturePacker::packFolder("res/textures/system", "res/textures", "system", 300, 700);
-	TexturePacker::packFolder("res/textures/entities/shadow-slime", "res/textures/entities", "shadow-slime", 128, 128);
+	TexturePacker::packDirectory("res/textures/tiles", "res/textures/tiles", 128, 128);
+	TexturePacker::packDirectory("res/textures/system", "res/textures/system", 300, 700);
+	TexturePacker::packDirectory("res/textures/entities/shadow-slime", "res/textures/entities/shadow-slime", 128, 128);
+	TexturePacker::packDirectory("res/textures/entities/player", "res/textures/entities/player-test", 128, 128);
 	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
 	//font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
 	changeScene(SceneType::GAME);
@@ -169,22 +174,24 @@ void Core::run()
 
 	Shader shader2d("res/shaders/sprite.vert", "res/shaders/sprite.frag");
 	Shader fontShader("res/shaders/font.vert", "res/shaders/font.frag");
+	Shader lightShader("res/shaders/light.vert", "res/shaders/light.frag");
 
-	std::string s("textures[");
-	for (int i = 0; i < 32; ++i)
-		shader2d.setUniform1i((s + std::to_string(i) + "]").c_str(), 0);
-
-	//shader2d.setUniform1i("textures[0]", 0);
-	//shader2d.setUniform1i("textures[1]", 1);
+	shader2d.enable();
+	shader2d.setUniform1i("lightMap", 10);
 
 	Renderer2D renderer2d;
 	renderer2d.setShader(&shader2d);
 	renderer2d.setFontShader(&fontShader);
 
-	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	LightRenderer2D lightRenderer2d;
+	lightRenderer2d.setShader(&lightShader);
 
 	Timer testTimer;
 
+
+	glm::vec2 edges(150.0f, 200.0f);
+	float factor = 60.0f;
+	bool up = false;
 	while (running)
 	{
 		Time::deltaTime = deltaTimer.elapsedSeconds();
@@ -229,13 +236,37 @@ void Core::run()
 
 		scene->update();
 		
+		if (up)
+		{
+			edges.x += Time::deltaTime * factor;
+			if (edges.x > 152.0f)
+				up = false;
+		}
+		else
+		{
+			edges.x -= Time::deltaTime * factor;
+			if (edges.x < 148.0f)
+				up = true;
+		}
+
+		//lightRenderer2d.getShader()->setUniform4f("defaultColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		lightRenderer2d.setDefaultLightColor(glm::vec4(0.1f, 0.1f, 0.3f, 1.0f));
+		lightRenderer2d.begin();
+		lightRenderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
+		lightRenderer2d.submitLight2D(glm::vec2(0.0f, 0.0f), glm::vec4(0.7f, 0.6f, 0.5f, 1.0f), edges);
+		lightRenderer2d.popMatrix();
+		lightRenderer2d.end();
+		lightRenderer2d.flush();
+
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
 		renderer2d.begin();
 		testTimer.reset();
 		scene->render(renderer2d);
 		//std::cout << "Rendering took: " << testTimer.elapsedSeconds() << std::endl;
 		renderer2d.end();
+		glActiveTexture(GL_TEXTURE0 + 10);
+		glBindTexture(GL_TEXTURE_2D, lightRenderer2d.getColorTextureAttachment());
 		renderer2d.flush();
 
 		window->display();

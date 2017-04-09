@@ -237,11 +237,19 @@
     <ClInclude Include="include\Trappist-1\animation\AnimationSheetManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Trappist-1\graphics\light\Light2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Trappist-1\graphics\light\LightRenderer2D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="res\shaders\light.vert" />
+    <None Include="res\shaders\light.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Collider.cpp">
@@ -365,6 +373,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\animation\AnimationSheetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\light\LightRenderer2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -37,6 +37,11 @@ void Renderer2D::setFontShader(Shader *fontShader)
 	fontShader->disable();
 }
 
+void Renderer2D::setLightMap(GLuint texture)
+{
+	this->lightMap = lightMap;
+}
+
 void Renderer2D::createBuffers()
 {
 	glGenVertexArrays(1, &dataBuffers[Renderer2D::DATA_BUFFERS_ELEMENT_VAO_INDEX]);
@@ -385,7 +390,7 @@ void Renderer2D::end()
 void Renderer2D::flush()
 {
 	//glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 	//glEnable(GL_SCISSOR_TEST);
 
 	// Flush standard vertices
@@ -457,7 +462,7 @@ void Renderer2D::flush()
 	glBindVertexArray(0);
 
 	//glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	//glDisable(GL_SCISSOR_TEST);
 }
 

@@ -1,0 +1,10 @@
+player-test.png
+16x16
+IdleFront:2-3-0.5-0-0-0-0
+IdleBack:0-1-0.5-0-0-0-0
+IdleRight:4-5-0.5-1-0-0-0
+IdleLeft:4-5-0.5-0-0-0-0
+MoveFront:8-9-0.1-0-0-0-0
+MoveBack:6-7-0.1-0-0-0-0
+MoveRight:10-11-0.1-1-0-0-0
+MoveLeft:10-11-0.1-0-0-0-0

@@ -8,12 +8,12 @@ namespace TextureManager
 
 	void load(TextureHandle handle, const char *fileName)
 	{
-		textures[handle].load(fileName);
+		textures[handle].load2(fileName);
 	}
 
 	void load(TextureHandle handle, const std::string &fileName)
 	{
-		textures[handle].load(fileName.c_str());
+		textures[handle].load2(fileName.c_str());
 	}
 
 	void unload(TextureHandle handle)
