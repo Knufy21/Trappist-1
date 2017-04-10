@@ -256,6 +256,10 @@
     </None>
     <None Include="res\shaders\light.vert" />
     <None Include="res\shaders\light.frag" />
+    <None Include="res\shaders\font.frag" />
+    <None Include="res\shaders\font.vert" />
+    <None Include="res\shaders\sprite.frag" />
+    <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Collider.cpp">

@@ -100,8 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl" />
+    <None Include="res\shaders\font.frag" />
+    <None Include="res\shaders\font.vert" />
     <None Include="res\shaders\light.frag" />
     <None Include="res\shaders\light.vert" />
+    <None Include="res\shaders\sprite.frag" />
+    <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animation\AnimationSheet.cpp" />

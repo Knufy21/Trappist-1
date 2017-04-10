@@ -1,6 +1,7 @@
 #include <Trappist-1\scenes\SceneMenu.hpp>
 
 #include <Trappist-1\Core.hpp>
+#include <Trappist-1\util\Input.hpp>
 
 #include <Trappist-1\ui\Listeners.hpp>
 #include <Trappist-1\ui\Actions.hpp>
@@ -11,39 +12,53 @@ constexpr float buttonPressTime = 0.06f;
 constexpr float labelFadeInTime = 0.05f;
 constexpr float labelFadeOutTime = 0.05f;
 
-
 SceneMenu::SceneMenu()
-{
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	
+	: focusedPlanet(SceneMenu::IMG_PLANETS_SIZE), state(SceneMenu::State::STANDARD)
+{	
 	type = (Scene::Type::MENU);
 
-	lblTitle.setFont(Core::font);
-	lblTitle.setColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
-	lblTitle.setTextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	lblTitle.setTextThickness(0.05f);
-	lblTitle.setTextOutlineThickness(0.2f);
-	lblTitle.setTextOutlineColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	lblTitle.setFontSize(60);
-	lblTitle.setTextAlignment(ui::Label::Alignment::CENTER);
-	lblTitle.setText("Trappist-1");
-	lblTitle.setOrigin(200.0f, 0.0f);
-	lblTitle.setSize(400.0f, 0.0f);
-	lblTitle.setAutoSizeMode(ui::Label::AutoSizeMode::Y);
+	for (std::size_t i = 0; i < SceneMenu::LBL_SIZE; ++i)
+	{
+		lbls[i].setFont(Core::font);
+		lbls[i].setColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		addWidget(&lbls[i]);
+	}
 
-	addWidget(&lblTitle);
+	lbls[SceneMenu::LBL_TITLE].setTextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	lbls[SceneMenu::LBL_TITLE].setTextOutlineColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	lbls[SceneMenu::LBL_TITLE].setTextThickness(0.05f);
+	lbls[SceneMenu::LBL_TITLE].setTextOutlineThickness(0.2f);
+	lbls[SceneMenu::LBL_TITLE].setFontSize(60);
+	lbls[SceneMenu::LBL_TITLE].setTextAlignment(ui::Label::Alignment::CENTER);
+	lbls[SceneMenu::LBL_TITLE].setText("Trappist-1");
+	lbls[SceneMenu::LBL_TITLE].setOrigin(300.0f, 0.0f);
+	lbls[SceneMenu::LBL_TITLE].setSize(600.0f, 0.0f);
+	lbls[SceneMenu::LBL_TITLE].setAutoSizeMode(ui::Label::AutoSizeMode::Y);
 
-	lblChooseInfo.setFont(Core::font);
-	lblChooseInfo.setColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
-	lblChooseInfo.setTextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	lblChooseInfo.setTextThickness(0.05f);
-	lblChooseInfo.setTextOutlineThickness(0.1f);
-	lblChooseInfo.setTextOutlineColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	lblChooseInfo.setFontSize(40);
-	lblChooseInfo.setTextAlignment(ui::Label::Alignment::CENTER);
-	lblChooseInfo.setText("Choose a planet to play on.");
-	lblChooseInfo.setAutoSizeMode(ui::Label::AutoSizeMode::Y);
-	addWidget(&lblChooseInfo);
+	lbls[SceneMenu::LBL_MAIN_INFO].setTextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	lbls[SceneMenu::LBL_MAIN_INFO].setTextOutlineColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	lbls[SceneMenu::LBL_MAIN_INFO].setTextThickness(0.08f);
+	lbls[SceneMenu::LBL_MAIN_INFO].setTextOutlineThickness(0.2f);
+	lbls[SceneMenu::LBL_MAIN_INFO].setFontSize(40);
+	lbls[SceneMenu::LBL_MAIN_INFO].setTextAlignment(ui::Label::Alignment::CENTER);
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(STR_CHOOSE_INFO);
+	lbls[SceneMenu::LBL_MAIN_INFO].setAutoSizeMode(ui::Label::AutoSizeMode::Y);
+
+	lbls[SceneMenu::LBL_PLANET_INFO].setTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	lbls[SceneMenu::LBL_PLANET_INFO].setTextOutlineColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+	lbls[SceneMenu::LBL_PLANET_INFO].setTextThickness(0.0f);
+	lbls[SceneMenu::LBL_PLANET_INFO].setTextOutlineThickness(0.0f);
+	lbls[SceneMenu::LBL_PLANET_INFO].setFontSize(20u);
+	lbls[SceneMenu::LBL_PLANET_INFO].setTextAlignment(ui::Label::Alignment::LEFT);
+	lbls[SceneMenu::LBL_PLANET_INFO].setAutoSizeMode(ui::Label::AutoSizeMode::NONE);
+
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setTextOutlineColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setTextThickness(0.0f);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setTextOutlineThickness(0.0f);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setFontSize(20u);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setTextAlignment(ui::Label::Alignment::LEFT);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setAutoSizeMode(ui::Label::AutoSizeMode::NONE);
 
 	/* objects */
 	TextureManager::load(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS, "res/textures/system");
@@ -54,409 +69,119 @@ SceneMenu::SceneMenu()
 	
 	addWidget(&imgTrappist1a);
 
-	imgTrappist1b.setEventReceiver(true);
-	imgTrappist1b.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1b"));
-	imgTrappist1b.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1b.addListener(ui::CursorEnterListener([this](const void *args)
+	for (std::size_t i = 0; i < SceneMenu::IMG_PLANETS_SIZE; ++i)
 	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
+		imgPlanets[i].setEventReceiver(true);
+		imgPlanets[i].setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord(SceneMenu::STR_PLANET_NAMES[i]));
+		imgPlanets[i].setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
+		imgPlanets[i].addListener(ui::CursorEnterListener([this, i](const void *args)
 		{
-			this->imgTrappist1b.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
+			if (!this->isAnyPlanetFocused())
+			{
+				const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
+				if (e->entered)
+				{
+					this->imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
 
-			this->lblPlanetInfo.setText("Trappist-1 b\nOrbital period: 1.51 days\nDistance to star: 0.011 AU\nRadius: 1.09 earth radii\nMass: 0.85 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1b.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
+					this->lbls[SceneMenu::LBL_PLANET_INFO].setText(SceneMenu::STR_PLANET_INFO[i]);
+					this->lbls[SceneMenu::LBL_PLANET_INFO].addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
+				}
+				else
+				{
+					this->imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
 
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1b.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
+					//this->lbls[SceneMenu::LBL_PLANET_INFO].addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
+					this->lbls[SceneMenu::LBL_PLANET_INFO].setText("");
+				}
+			}
+		}));
+		imgPlanets[i].addListener(ui::MouseButtonListener([this, i](const void *args)
 		{
-			this->imgTrappist1b.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1b.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1b);
-
-	imgTrappist1c.setEventReceiver(true);
-	imgTrappist1c.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1c"));
-	imgTrappist1c.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1c.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1c.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 c\nOrbital period: 2.42 days\nDistance to star: 0.015 AU\nRadius: 1.06 earth radii\nMass: 1.38 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1c.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1c.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1c.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1c.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1c);
-
-	imgTrappist1d.setEventReceiver(true);
-	imgTrappist1d.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1d"));
-	imgTrappist1d.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1d.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1d.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 d\nOrbital period: 4.05 days\nDistance to star: 0.021 AU\nRadius: 0.77 earth radii\nMass: 0.41 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1d.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1d.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1d.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1d.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1d);
-
-	imgTrappist1e.setEventReceiver(true);
-	imgTrappist1e.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1e"));
-	imgTrappist1e.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1e.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1e.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 e\nOrbital period: 6.10 days\nDistance to star: 0.028 AU\nRadius: 0.92 earth radii\nMass: 0.62 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1e.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1e.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1e.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1e.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1e);
-
-	imgTrappist1f.setEventReceiver(true);
-	imgTrappist1f.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1f"));
-	imgTrappist1f.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1f.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1f.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 f\nOrbital period: 9.21 days\nDistance to star: 0.037 AU\nRadius: 1.04 earth radii\nMass: 0.68 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1f.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1f.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1f.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1f.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1f);
-
-	imgTrappist1g.setEventReceiver(true);
-	imgTrappist1g.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1g"));
-	imgTrappist1g.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1g.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1g.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 g\nOrbital period: 12.35 days\nDistance to star: 0.045 AU\nRadius: 1.13 earth radii\nMass: 1.34 earths");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1g.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1g.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1g.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1g.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1g);
-
-	imgTrappist1h.setEventReceiver(true);
-	imgTrappist1h.setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord("Trappist-1h"));
-	imgTrappist1h.setTexture(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexture(), false);
-	imgTrappist1h.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->imgTrappist1h.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-
-			this->lblPlanetInfo.setText("Trappist-1 h\nOrbital period: ~20 days\nDistance to star: ~0.06 AU\nRadius: 0.76 earth radii\nMass: ?");
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), labelFadeInTime));
-		}
-		else
-		{
-			this->imgTrappist1h.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-			this->lblPlanetInfo.addAction(ui::Vec4Action(ui::Vec4Action::Type::TEXT_RGBA_TO, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), labelFadeOutTime));
-		}
-	}));
-	imgTrappist1h.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->imgTrappist1h.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
-		}
-		else
-		{
-			this->imgTrappist1h.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
-
-			Core::queryScene(Scene::Type::GAME);
-		}
-	}));
-	addWidget(&imgTrappist1h);
-
-	/* info labels*/
-
-	#define labelColorDefault glm::vec4(0.9f, 0.9f, 1.0f, 0.2f)
-	#define labelSize glm::vec2(200.0f, 50.0f)
-	#define labelOrigin glm::vec2(100.0f, 25.0f)
-	#define labelTextColor glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
-	#define labelOutlineColor glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)
-	#define labelFontSize 20u
-	#define labelFont Core::font
-	#define labelTextThickness 0.0f
-	#define labelOutlineThickness 0.0f
-	#define labelTextAlignment ui::Label::Alignment::LEFT
-	#define labelAutoSizeMode ui::Label::AutoSizeMode::NONE
-
-	lblPlanetInfo.setFont(labelFont);
-	lblPlanetInfo.setColor(labelColorDefault);
-	lblPlanetInfo.setTextColor(labelTextColor);
-	lblPlanetInfo.setTextThickness(labelTextThickness);
-	lblPlanetInfo.setTextOutlineThickness(labelOutlineThickness);
-	lblPlanetInfo.setTextOutlineColor(labelOutlineColor);
-	lblPlanetInfo.setFontSize(labelFontSize);
-	lblPlanetInfo.setTextAlignment(labelTextAlignment);
-	//lblPlanetInfo.setText("Trappist-1 b\nMass: 0.85 earths");
-	//lblPlanetInfo.setVisible(false);
-	
-	lblPlanetInfo.setAutoSizeMode(labelAutoSizeMode);
-	addWidget(&lblPlanetInfo);
+			if (!this->isAnyPlanetFocused())
+			{
+				const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
+				if (e->pressed)
+				{
+					this->imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.05f, 1.05f), buttonPressTime));
+				}
+				else
+				{
+					this->imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
+//					this->lbls[SceneMenu::LBL_PLANET_INFO].setText("");
+					this->focusPlanet(i);
+				}
+			}
+		}));
+		addWidget(&imgPlanets[i]);
+	}
 
 	/* buttons */
 	
 	#define buttonColorDefault glm::vec4(0.9f, 0.9f, 1.0f, 0.2f)
 	#define buttonColorHighlighted glm::vec4(1.0f, 1.0f, 1.0f, 0.3f)
 	#define buttonColorPressed glm::vec4(1.0f, 1.0f, 1.0f, 0.4f)
-	#define buttonSize glm::vec2(200.0f, 50.0f)
-	#define buttonOrigin glm::vec2(100.0f, 25.0f)
-	#define buttonTextColor glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
-	#define buttonFontSize 32u
-	#define buttonFont Core::font
 
-	/* btnPlay */
-	btnCredits.setEventReceiver(true);
-	btnCredits.setColor(buttonColorDefault);
-	btnCredits.setSize(buttonSize);
-	btnCredits.setOrigin(buttonOrigin);
-	btnCredits.setFont(buttonFont);
-	btnCredits.setTextColor(buttonTextColor);
-	btnCredits.setFontSize(buttonFontSize);
-	btnCredits.setTextAlignment(ui::Label::Alignment::CENTER);
-	//btnCredits.setAutoSizeMode(ui::Label::AutoSizeMode::Y);
-	btnCredits.setText("Credits");
-	btnCredits.addListener(ui::MouseButtonListener([this](const void *args)
+	for (std::size_t i = 0; i < SceneMenu::BTN_SIZE; ++i)
 	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
+		btns[i].setEventReceiver(true);
+		btns[i].setColor(buttonColorDefault);
+		btns[i].setSize(SceneMenu::BTN_WIDTH, SceneMenu::BTN_HEIGHT);
+		btns[i].setOrigin(SceneMenu::BTN_WIDTH * 0.5f, SceneMenu::BTN_HEIGHT * 0.5f);
+		btns[i].setFont(Core::font);
+		btns[i].setTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		btns[i].setFontSize(30u);
+		btns[i].setTextAlignment(ui::Label::Alignment::CENTER);
+		//btns[i].setAutoSizeMode(ui::Label::AutoSizeMode::Y);
+		btns[i].setText(SceneMenu::STR_BUTTON_NAMES[i]);
+		btns[i].addListener(ui::MouseButtonListener([this, i](const void *args)
 		{
-			this->btnCredits.setColor(buttonColorPressed);
-		}
-		else
-		{
-			this->btnCredits.setColor(buttonColorHighlighted);
-		}
-	}));
-	btnCredits.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->btnCredits.setColor(buttonColorHighlighted);
-			this->btnCredits.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-		}
-		else
-		{
-			this->btnCredits.setColor(buttonColorDefault);
-			this->btnCredits.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-		}
-	}));
-	addWidget(&btnCredits);
+			const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
+			if (e->pressed)
+			{
+				this->btns[i].setColor(buttonColorPressed);
+			}
+			else
+			{
+				this->btns[i].setColor(buttonColorHighlighted);
 
-	/* btnOptions */
-	btnOptions.setEventReceiver(true);
-	btnOptions.setColor(buttonColorDefault);
-	btnOptions.setSize(buttonSize);
-	btnOptions.setOrigin(buttonOrigin);
-	btnOptions.setFont(buttonFont);
-	btnOptions.setTextColor(buttonTextColor);
-	btnOptions.setFontSize(buttonFontSize);
-	btnOptions.setTextAlignment(ui::Label::Alignment::CENTER);
-	//btnOptions.setAutoSizeMode(ui::Label::AutoSizeMode::Y);
-	btnOptions.setText("Options");
-	btnOptions.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
+				// button actions go here
+				switch (i)
+				{
+				default:
+				case SceneMenu::BTN_OPTIONS:
+					showOptions();
+					break;
+				case SceneMenu::BTN_CREDITS:
+					showCredits();
+					break;
+				case SceneMenu::BTN_QUIT:
+					Core::exit();
+					break;
+				case SceneMenu::BTN_MULTIPLAYER:
+					// TODO: implement
+					break;
+				case SceneMenu::BTN_SINGLEPLAYER:
+					Core::queryScene(Scene::Type::GAME);
+					break;
+				}
+			}
+		}));
+		btns[i].addListener(ui::CursorEnterListener([this, i](const void *args)
 		{
-			this->btnOptions.setColor(buttonColorPressed);
-		}
-		else
-		{
-			this->btnOptions.setColor(buttonColorHighlighted);
-		}
-	}));
-	btnOptions.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->btnOptions.setColor(buttonColorHighlighted);
-			this->btnOptions.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-		}
-		else
-		{
-			this->btnOptions.setColor(buttonColorDefault);
-			this->btnOptions.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-		}
-	}));
-	addWidget(&btnOptions);
-
-	/* btnExit */
-	btnQuit.setEventReceiver(true);
-	btnQuit.setColor(buttonColorDefault);
-	btnQuit.setSize(buttonSize);
-	btnQuit.setOrigin(buttonOrigin);
-	btnQuit.setFont(buttonFont);
-	btnQuit.setTextColor(buttonTextColor);
-	btnQuit.setFontSize(buttonFontSize);
-	btnQuit.setTextAlignment(ui::Label::Alignment::CENTER);
-	//btnQuit.setAutoSizeMode(ui::Label::AutoSizeMode::Y);
-	btnQuit.setText("Quit");
-	btnQuit.addListener(ui::MouseButtonListener([this](const void *args)
-	{
-		const ui::MouseButtonEventArgs *e = static_cast<const ui::MouseButtonEventArgs *>(args);
-		if (e->pressed)
-		{
-			this->btnQuit.setColor(buttonColorPressed);
-		}
-		else
-		{
-			this->btnQuit.setColor(buttonColorHighlighted);
-			Core::exit();
-		}
-	}));
-	btnQuit.addListener(ui::CursorEnterListener([this](const void *args)
-	{
-		const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
-		if (e->entered)
-		{
-			this->btnQuit.setColor(buttonColorHighlighted);
-			this->btnQuit.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
-		}
-		else
-		{
-			this->btnQuit.setColor(buttonColorDefault);
-			this->btnQuit.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
-		}
-	}));
-	addWidget(&btnQuit);
+			const ui::CursorEnterEventArgs *e = static_cast<const ui::CursorEnterEventArgs *>(args);
+			if (e->entered)
+			{
+				this->btns[i].setColor(buttonColorHighlighted);
+				this->btns[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
+			}
+			else
+			{
+				this->btns[i].setColor(buttonColorDefault);
+				this->btns[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.0f, 1.0f), buttonHightlightTime));
+			}
+		}));
+		addWidget(&btns[i]);
+	}
 
 	onSizeChanged(Core::windowSize.x, Core::windowSize.y);
 }
@@ -469,11 +194,173 @@ SceneMenu::~SceneMenu()
 void SceneMenu::update()
 {
 	BASE::update();
+
+	if (getState() == SceneMenu::State::PLANET_INFO && Input::getKeyPressed(sf::Keyboard::Escape))
+		unfocusPlanet();
+	else if (getState() == SceneMenu::State::CREDITS && (Input::getMousePressed(sf::Mouse::Button::Left) || Input::getKeyPressed(sf::Keyboard::Escape)))
+		hideCredits();
+	if (getState() == SceneMenu::State::OPTIONS && Input::getKeyPressed(sf::Keyboard::Escape))
+		hideOptions();
 }
 
 void SceneMenu::render(Renderer2D &renderer2d)
 {
 	BASE::render(renderer2d);
+}
+
+void SceneMenu::focusPlanet(std::size_t index)
+{
+	std::size_t lastFocusedPlanet = focusedPlanet;
+	focusedPlanet = index;
+
+	constexpr float duration = 0.6f;
+
+	if (isAnyPlanetFocused()) // if focus planet call is valid (-> make planet focused)
+	{
+		setState(SceneMenu::State::PLANET_INFO);
+
+		imgPlanets[index].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, focusedPlanetPosition, duration));
+		imgPlanets[index].addAction(ui::Vec2Action(ui::Vec2Action::SCALE_TO, glm::vec2(4.0f, 4.0f), duration));
+
+		hidePlanets(index, index + 1, duration);
+
+		lbls[LBL_PLANET_INFO].setText("");
+		lbls[LBL_PLANET_PLAY_INFO].setText(SceneMenu::STR_PLANET_INFO[index]);
+
+		showPlayButtons(duration);
+		hideStandardButtons(duration);
+	}
+	else // if focus planet call is invalid (-> make planet unfocused)
+	{
+		setState(SceneMenu::State::STANDARD);
+
+		imgPlanets[lastFocusedPlanet].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[lastFocusedPlanet], planetYPosition), duration));
+		imgPlanets[lastFocusedPlanet].addAction(ui::Vec2Action(ui::Vec2Action::SCALE_TO, glm::vec2(1.0f, 1.0f), duration));
+
+		showPlanets(lastFocusedPlanet, lastFocusedPlanet + 1, duration);
+
+		//lbls[LBL_PLANET_INFO].setText(SceneMenu::STR_PLANET_INFO[lastFocusedPlanet]);
+		lbls[LBL_PLANET_PLAY_INFO].setText("");
+
+		hidePlayButtons(duration);
+		showStandardButtons(duration);
+	}
+}
+
+void SceneMenu::showCredits()
+{
+	if (isAnyPlanetFocused() || getState() == SceneMenu::State::CREDITS)
+		return;
+
+	setState(SceneMenu::State::CREDITS);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CREDITS);
+
+	constexpr float duration = 0.6f;
+	constexpr std::size_t planetSplitIndex = 3;
+
+	hidePlanets(planetSplitIndex, planetSplitIndex, duration);
+	hideStandardButtons(duration);
+}
+
+void SceneMenu::hideCredits()
+{
+	if (getState() != SceneMenu::State::CREDITS)
+		return;
+
+	setState(SceneMenu::State::STANDARD);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
+
+	constexpr float duration = 0.6f;
+	constexpr std::size_t planetSplitIndex = 3;
+
+	showPlanets(planetSplitIndex, planetSplitIndex, duration);
+	showStandardButtons(duration);
+}
+
+void SceneMenu::showOptions()
+{
+	if (isAnyPlanetFocused() || getState() == SceneMenu::State::OPTIONS)
+		return;
+
+	setState(SceneMenu::State::OPTIONS);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_BUTTON_NAMES[SceneMenu::BTN_OPTIONS]);
+
+	constexpr float duration = 0.6f;
+	constexpr std::size_t planetSplitIndex = 3;
+
+	hidePlanets(planetSplitIndex, planetSplitIndex, duration);
+	hideStandardButtons(duration);
+}
+
+void SceneMenu::hideOptions()
+{
+	if (getState() != SceneMenu::State::OPTIONS)
+		return;
+
+	setState(SceneMenu::State::STANDARD);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
+
+	constexpr float duration = 0.6f;
+	constexpr std::size_t planetSplitIndex = 3;
+
+	showPlanets(planetSplitIndex, planetSplitIndex, duration);
+	showStandardButtons(duration);
+}
+
+void SceneMenu::hidePlanets(std::size_t leftSplitIndex, std::size_t rightSplitIndex, float duration)
+{
+	// hide tr1a
+	imgTrappist1a.addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(-planetXOffset, 0.0f), duration));
+
+	// hide left planets
+	for (std::size_t i = 0; i < leftSplitIndex; ++i)
+		imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[i] - planetXOffset, planetYPosition), duration));
+
+	// hide right planets
+	for (std::size_t i = rightSplitIndex; i < SceneMenu::IMG_PLANETS_SIZE; ++i)
+		imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[i] + planetXOffset, planetYPosition), duration));
+}
+
+void SceneMenu::showPlanets(std::size_t leftSplitIndex, std::size_t rightSplitIndex, float duration)
+{
+	// show tr1a
+	imgTrappist1a.addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(0.0f, 0.0f), duration));
+
+	// show left planets
+	for (std::size_t i = 0; i < leftSplitIndex; ++i)
+		imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[i], planetYPosition), duration));
+
+	// show right planets
+	for (std::size_t i = rightSplitIndex; i < SceneMenu::IMG_PLANETS_SIZE; ++i)
+		imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[i], planetYPosition), duration));
+}
+
+void SceneMenu::hideStandardButtons(float duration)
+{
+	for (std::size_t i = SceneMenu::BTN_STD_BEGIN; i < SceneMenu::BTN_STD_END; ++i)
+		btns[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(baseBtnPosition.x + baseBtnXOffset, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * i), duration));
+}
+
+void SceneMenu::showStandardButtons(float duration)
+{
+	for (std::size_t i = SceneMenu::BTN_STD_BEGIN; i < SceneMenu::BTN_STD_END; ++i)
+		btns[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(baseBtnPosition.x, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * i), duration));
+}
+
+void SceneMenu::hidePlayButtons(float duration)
+{
+	for (std::size_t i = SceneMenu::BTN_PLAY_BEGIN; i < SceneMenu::BTN_PLAY_END; ++i)
+		btns[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(baseBtnPosition.x + baseBtnXOffset, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * (i - SceneMenu::BTN_PLAY_BEGIN)), duration));
+}
+
+void SceneMenu::showPlayButtons(float duration)
+{
+	for (std::size_t i = SceneMenu::BTN_PLAY_BEGIN; i < SceneMenu::BTN_PLAY_END; ++i)
+		btns[i].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(baseBtnPosition.x, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * (i - SceneMenu::BTN_PLAY_BEGIN)), duration));
 }
 
 void SceneMenu::onSizeChanged(unsigned int width, unsigned int height)
@@ -487,59 +374,76 @@ void SceneMenu::onSizeChanged(unsigned int width, unsigned int height)
 
 	/* objects */
 
+	planetXOffset = widthf;
+
 	FloatRect rect = imgTrappist1a.getTextureRect();
 	imgTrappist1a.setSize(((rect.width * imgTrappist1a.getTexture()->getSize().x) / (rect.height * imgTrappist1a.getTexture()->getSize().y)) * heightf, heightf);
 
 	constexpr float objectHeightMultiplicator = 0.15f;
 
-	rect = imgTrappist1b.getTextureRect();
-	imgTrappist1b.setSize(((rect.width * imgTrappist1b.getTexture()->getSize().x) / (rect.height * imgTrappist1b.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1b.setOrigin(imgTrappist1b.getSize() * 0.5f);
-	imgTrappist1b.setPosition(widthf * 0.2f, heightf * 0.5f);
+	planetYPosition = heighth;
+	focusedPlanetPosition.x = widthf * 0.2f;
+	focusedPlanetPosition.y = heighth;
+	if (getState() == SceneMenu::State::STANDARD) // reset planet position
+	{
+		for (std::size_t i = 0; i < SceneMenu::IMG_PLANETS_SIZE - 1; ++i)
+		{
+			rect = imgPlanets[i].getTextureRect();
+			imgPlanets[i].setSize(((rect.width * imgPlanets[i].getTexture()->getSize().x) / (rect.height * imgPlanets[i].getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
+			imgPlanets[i].setOrigin(imgPlanets[i].getSize() * 0.5f);
+			planetXPositions[i] = widthf * (static_cast<float>(i) * 0.1f + 0.28f);
+			imgPlanets[i].setPosition(planetXPositions[i], planetYPosition);
+		}
+	}
+	else // reset planet position plus offset
+	{
+		for (std::size_t i = 0; i < SceneMenu::IMG_PLANETS_SIZE - 1; ++i)
+		{
+			rect = imgPlanets[i].getTextureRect();
+			imgPlanets[i].setSize(((rect.width * imgPlanets[i].getTexture()->getSize().x) / (rect.height * imgPlanets[i].getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
+			imgPlanets[i].setOrigin(imgPlanets[i].getSize() * 0.5f);
+			planetXPositions[i] = widthf * (static_cast<float>(i) * 0.1f + 0.28f);
+		}
+		if (isAnyPlanetFocused()) // split on focused
+		{
+			hidePlanets(focusedPlanet, focusedPlanet + 1, 0.0f); // TODO: find better fix than duration 0.0f
+			imgPlanets[focusedPlanet].setPosition(focusedPlanetPosition); // move focussed planet to correct position
+		}
+		else // split default
+		{
+			hidePlanets(3, 3, 0.0f); // TODO: find better fix than duration 0.0f
+		}
+	}
+	// TODO: fix standard button comeback when options or credits state and window is resized
+	baseBtnPosition.x = widthf * 0.8f;
+	baseBtnPosition.y = heightf * 0.9f;
+	baseBtnXOffset = widthf * 0.2f + 400.0f;
+	if (isAnyPlanetFocused()) // play buttons shown
+	{
+		for (std::size_t i = SceneMenu::BTN_STD_BEGIN; i < SceneMenu::BTN_STD_END; ++i)
+			btns[i].setPosition(baseBtnPosition.x + baseBtnXOffset, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * i);
+		for (std::size_t i = SceneMenu::BTN_PLAY_BEGIN; i < SceneMenu::BTN_PLAY_END; ++i)
+			btns[i].setPosition(baseBtnPosition.x, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * (i - SceneMenu::BTN_PLAY_BEGIN));
+	}
+	else // standard buttons shown
+	{
+		for (std::size_t i = SceneMenu::BTN_STD_BEGIN; i < SceneMenu::BTN_STD_END; ++i)
+			btns[i].setPosition(baseBtnPosition.x, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * i);
+		for (std::size_t i = SceneMenu::BTN_PLAY_BEGIN; i < SceneMenu::BTN_PLAY_END; ++i)
+			btns[i].setPosition(baseBtnPosition.x + baseBtnXOffset, baseBtnPosition.y - (SceneMenu::BTN_HEIGHT + 10.0f) * (i - SceneMenu::BTN_PLAY_BEGIN));
+	}
 
-	rect = imgTrappist1c.getTextureRect();
-	imgTrappist1c.setSize(((rect.width * imgTrappist1c.getTexture()->getSize().x) / (rect.height * imgTrappist1c.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1c.setOrigin(imgTrappist1c.getSize() * 0.5f);
-	imgTrappist1c.setPosition(widthf * 0.32f, heightf * 0.5f);
+	lbls[SceneMenu::LBL_TITLE].setPosition(widthh, heightf * 0.01f);
 
-	rect = imgTrappist1d.getTextureRect();
-	imgTrappist1d.setSize(((rect.width * imgTrappist1d.getTexture()->getSize().x) / (rect.height * imgTrappist1d.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1d.setOrigin(imgTrappist1d.getSize() * 0.5f);
-	imgTrappist1d.setPosition(widthf * 0.44f, heightf * 0.5f);
+	lbls[SceneMenu::LBL_MAIN_INFO].setPosition(widthh, lbls[SceneMenu::LBL_TITLE].getPosition().y + heightf * 0.15f);
+	lbls[SceneMenu::LBL_MAIN_INFO].setOrigin(widthh * 0.94f, 0.0f);
+	lbls[SceneMenu::LBL_MAIN_INFO].setSize(widthf * 0.94f, 0.0f);
 
-	rect = imgTrappist1e.getTextureRect();
-	imgTrappist1e.setSize(((rect.width * imgTrappist1e.getTexture()->getSize().x) / (rect.height * imgTrappist1e.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1e.setOrigin(imgTrappist1e.getSize() * 0.5f);
-	imgTrappist1e.setPosition(widthf * 0.56f, heightf * 0.5f);
+	lbls[SceneMenu::LBL_PLANET_INFO].setPosition(widthh, heightf * 0.6f);
+	lbls[SceneMenu::LBL_PLANET_INFO].setOrigin(widthh * 0.6f, 0.0f);
+	lbls[SceneMenu::LBL_PLANET_INFO].setSize(widthf * 0.6f, 0.0f);
 
-	rect = imgTrappist1f.getTextureRect();
-	imgTrappist1f.setSize(((rect.width * imgTrappist1f.getTexture()->getSize().x) / (rect.height * imgTrappist1f.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1f.setOrigin(imgTrappist1f.getSize() * 0.5f);
-	imgTrappist1f.setPosition(widthf * 0.68f, heightf * 0.5f);
-
-	rect = imgTrappist1g.getTextureRect();
-	imgTrappist1g.setSize(((rect.width * imgTrappist1g.getTexture()->getSize().x) / (rect.height * imgTrappist1g.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1g.setOrigin(imgTrappist1g.getSize() * 0.5f);
-	imgTrappist1g.setPosition(widthf * 0.8f, heightf * 0.5f);
-
-	rect = imgTrappist1h.getTextureRect();
-	imgTrappist1h.setSize(((rect.width * imgTrappist1h.getTexture()->getSize().x) / (rect.height * imgTrappist1h.getTexture()->getSize().y)) * (heightf * objectHeightMultiplicator), heightf * objectHeightMultiplicator);
-	imgTrappist1h.setOrigin(imgTrappist1h.getSize() * 0.5f);
-	imgTrappist1h.setPosition(widthf * 0.92f, heightf * 0.5f);
-
-	btnCredits.setPosition(widthf * 0.8f, heightf * 0.8f - 60.0f);
-	btnOptions.setPosition(widthf * 0.8f, heightf * 0.8f);
-	btnQuit.setPosition(widthf * 0.8f, heightf * 0.8f + 60.0f);
-
-	lblTitle.setPosition(widthh, heightf * 0.01f);
-
-	lblChooseInfo.setPosition(widthh, lblTitle.getPosition().y + heightf * 0.15f);
-	lblChooseInfo.setOrigin(widthh * 0.94f, 0.0f);
-	lblChooseInfo.setSize(widthf * 0.94f, 0.0f);
-
-	/*planet info*/
-
-	lblPlanetInfo.setPosition(widthh, heightf * 0.6f);
-	lblPlanetInfo.setOrigin(widthh * 0.6f, 0.0f);
-	lblPlanetInfo.setSize(widthf * 0.6f, 0.0f);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setPosition(widthf * 0.8f, heightf * 0.3f);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setSize(widthf * 0.6f, 0.0f);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].setOrigin(widthh * 0.3f, 0.0f);
 }

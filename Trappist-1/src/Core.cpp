@@ -83,7 +83,7 @@ void Core::run()
 
 	LightRenderer2D lightRenderer2d;
 	lightRenderer2d.setShader(&lightShader);
-
+	shader2d.setUniform1i("useLightMap", 0);
 	Timer testTimer;
 
 	while (running)

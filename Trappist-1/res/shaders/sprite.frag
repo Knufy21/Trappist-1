@@ -14,6 +14,7 @@ uniform sampler2D textures[32]; // glActiveTexture 0 .. 31
 //};
 
 uniform sampler2D lightMap;
+uniform int useLightMap;
 
 void main()
 {
@@ -22,9 +23,12 @@ void main()
 	else
 		color = fragColor * texture(textures[int(fragTextureID)], fragTexCoord);
 
-	if(color.a < 1.0f)
+	if(color.a == 0.0f)
 		discard;
 
-	vec2 lightMapCoord = (fragPosition + 1.0f) * 0.5f;
-	color *= texture(lightMap, lightMapCoord);
+	if(useLightMap > 0)
+	{
+		vec2 lightMapCoord = (fragPosition + 1.0f) * 0.5f;
+		color *= texture(lightMap, lightMapCoord);
+	}
 }
