@@ -1,6 +1,6 @@
 #include <Trappist-1\graphics\Texture.hpp>
 
-#include <SFML\Graphics.hpp>
+#include <SFML\Graphics\Image.hpp>
 
 //namespace
 //{

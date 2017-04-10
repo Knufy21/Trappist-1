@@ -264,7 +264,7 @@ namespace ui
 		if(pressed)
 			if (isEnabled())
 			{
-				sf::FloatRect bounds = getGlobalBounds();
+				FloatRect bounds = getGlobalBounds();
 				setCursorPosition(glm::vec2(static_cast<float>(Input::getMousePos().x) - bounds.left, static_cast<float>(Input::getMousePos().y) - bounds.top), true);
 			}
 	}
@@ -275,7 +275,7 @@ namespace ui
 
 		if (isEnabled() && isPressed())
 		{
-			sf::FloatRect bounds = getGlobalBounds();
+			FloatRect bounds = getGlobalBounds();
 			setCursorPosition(glm::vec2(static_cast<float>(Input::getMousePos().x) - bounds.left, static_cast<float>(Input::getMousePos().y) - bounds.top), false);
 		}
 	}

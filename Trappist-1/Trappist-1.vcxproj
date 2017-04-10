@@ -39,6 +39,7 @@
     <ClInclude Include="include\Trappist-1\Graphics\Fonts\Kerning.hpp" />
     <ClInclude Include="include\Trappist-1\graphics\light\Light2D.hpp" />
     <ClInclude Include="include\Trappist-1\graphics\light\LightRenderer2D.hpp" />
+    <ClInclude Include="include\Trappist-1\graphics\Rect.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Renderer2D.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Shader.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\SplitTexture.hpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="include\Trappist-1\UI\Widgets\View.hpp" />
     <ClInclude Include="include\Trappist-1\UI\Widgets\Widget.hpp" />
     <ClInclude Include="include\Trappist-1\Util.hpp" />
+    <ClInclude Include="include\Trappist-1\util\DebugLog.hpp" />
     <ClInclude Include="include\Trappist-1\Util\EightBoolArray.hpp" />
     <ClInclude Include="include\Trappist-1\Util\Input.hpp" />
     <ClInclude Include="include\Trappist-1\Util\TexturePacker.hpp" />
@@ -117,6 +119,7 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Transform2D.cpp" />
+    <ClCompile Include="src\scenes\Scene.cpp" />
     <ClCompile Include="src\scenes\SceneGame.cpp" />
     <ClCompile Include="src\scenes\SceneMenu.cpp" />
     <ClCompile Include="src\TextureAtlas.cpp" />

@@ -22,11 +22,9 @@ void main()
 	else
 		color = fragColor * texture(textures[int(fragTextureID)], fragTexCoord);
 
-	if(color.a == 0.0f)
+	if(color.a < 1.0f)
 		discard;
 
-	float x = (gl_FragCoord.x / 800.0f);
-	float y = (gl_FragCoord.y / 480.0f);
-	color *= texture(lightMap, vec2(x, y));
-	//color *= vec4(val, val, val, 1.0f);
+	vec2 lightMapCoord = (fragPosition + 1.0f) * 0.5f;
+	color *= texture(lightMap, lightMapCoord);
 }

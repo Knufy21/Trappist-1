@@ -176,7 +176,7 @@ namespace ui
 		float *rowHeights = new float[rowCount]();
 		float *columnWidths = new float[columnCount]();
 
-		sf::FloatRect bounds;
+		FloatRect bounds;
 		unsigned int rowIndex, columnIndex, cellIndex;
 		for (rowIndex = 0; rowIndex < rowCount; ++rowIndex)
 		{

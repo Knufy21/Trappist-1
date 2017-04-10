@@ -2,15 +2,14 @@
 
 #include <functional>
 #include <unordered_set>
-#include <SFML\Graphics.hpp>
 #include <glm\glm.hpp>
+#include <SFML\Window\Window.hpp>
+#include <SFML\Window\Event.hpp>
 
 class Renderer2D;
 namespace ui
 {
 	class Widget;
-	//class Window;
-	//struct Event;
 	class Screen
 	{
 	public:

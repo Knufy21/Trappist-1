@@ -70,7 +70,7 @@ bool TextureAtlas::load2(const char *fileName)
 
 	while (fileCount > 0)
 	{
-		sf::FloatRect rect;
+		FloatRect rect;
 		file.read(reinterpret_cast<char *>(&rect), sizeof(rect));
 
 		std::size_t len;

@@ -3,8 +3,6 @@
 #include <Trappist-1\entities\Entity.hpp>
 #include <Trappist-1\components\Collider.hpp>
 
-#include <SFML\Graphics.hpp>
-
 namespace CollisionDetector
 {
 

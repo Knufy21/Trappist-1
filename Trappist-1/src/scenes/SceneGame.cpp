@@ -5,6 +5,7 @@
 #include <Trappist-1\Util.hpp>
 
 #include <Trappist-1\graphics\Renderer2D.hpp>
+#include <Trappist-1\graphics\light\LightRenderer2D.hpp>
 
 #include <Trappist-1\Core.hpp>
 
@@ -14,8 +15,9 @@
 #include <Trappist-1\animation\AnimationSheetManager.hpp>
 
 SceneGame::SceneGame()
+	: lightEdges(150.0f, 200.0f), lightFactor(60.0f), lightUp(false)
 {
-	type = SceneType::GAME;
+	type = Scene::Type::GAME;
 
 	testTexture.load("res/textures/entities/Player.png");
 	testTexture.setSmooth(false);
@@ -83,6 +85,19 @@ SceneGame::~SceneGame()
 
 void SceneGame::update()
 {
+	if (lightUp)
+	{
+		lightEdges.x += Time::deltaTime * lightFactor;
+		if (lightEdges.x > 152.0f)
+			lightUp = false;
+	}
+	else
+	{
+		lightEdges.x -= Time::deltaTime * lightFactor;
+		if (lightEdges.x < 148.0f)
+			lightUp = true;
+	}
+
 	inputUpdate();
 
 	if (!paused)
@@ -90,6 +105,23 @@ void SceneGame::update()
 		playerMovement();
 		World::update();
 	}
+}
+
+void SceneGame::renderLights(LightRenderer2D &lightRenderer2d)
+{
+	lightRenderer2d.setDefaultLightColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+	lightRenderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
+
+	// player's light
+	lightRenderer2d.submitLight2D(player->getPosition(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(50.0f, 200.0f));
+
+	// ground light
+	lightRenderer2d.submitLight2D(glm::vec2(0.0f, -50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), lightEdges);
+	lightRenderer2d.submitLight2D(glm::vec2(-50.0f, 50.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), lightEdges);
+	lightRenderer2d.submitLight2D(glm::vec2(50.0f, 50.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), lightEdges);
+
+	lightRenderer2d.popMatrix();
 }
 
 void SceneGame::render(Renderer2D &renderer2d)
@@ -264,5 +296,5 @@ void SceneGame::playerMovement()
 void SceneGame::inputUpdate()
 {
 	if (Input::getKeyPressed(sf::Keyboard::Escape))
-		Core::queryScene(SceneType::MENU);
+		Core::queryScene(Scene::Type::MENU);
 }

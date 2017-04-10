@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Trappist-1\graphics\Texture.hpp>
 #include <Trappist-1\scenes\Scene.hpp>
+#include <Trappist-1\graphics\Texture.hpp>
 
 class Player;
 class SceneGame : public Scene
@@ -10,8 +10,10 @@ public:
 	SceneGame();
 	virtual ~SceneGame();
 
-	virtual void update();
-	virtual void render(Renderer2D &renderer2d) override;
+	virtual void update() override;
+
+	virtual void renderLights(LightRenderer2D &lightRenderer2d) override final;
+	virtual void render(Renderer2D &renderer2d) override final;
 
 	virtual void onSizeChanged(unsigned int width, unsigned int height) override;
 
@@ -29,6 +31,11 @@ private:
 	Texture texPlayer;
 	Texture testTexture;
 	bool paused;
+
+	// test for lights
+	glm::vec2 lightEdges;
+	float lightFactor;
+	bool lightUp;
 };
 
 inline bool SceneGame::isPaused() const

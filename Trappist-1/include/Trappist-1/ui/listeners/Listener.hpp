@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "glm\glm.hpp"
-
-#include <SFML\Graphics.hpp>
+#include <glm\glm.hpp>
+#include <SFML\Window\Mouse.hpp>
+#include <SFML\Window\Keyboard.hpp>
 
 namespace ui
 {

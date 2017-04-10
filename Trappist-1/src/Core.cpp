@@ -1,8 +1,12 @@
 #include <Trappist-1\Core.hpp>
 #include <Trappist-1\Util.hpp>
 
-#include <Trappist-1\graphics\Renderer2D.hpp>
+#include <SFML\Window\Window.hpp>
+#include <SFML\Window\Event.hpp>
+
 #include <Trappist-1\graphics\Shader.hpp>
+#include <Trappist-1\graphics\Renderer2D.hpp>
+#include <Trappist-1\graphics\light\LightRenderer2D.hpp>
 
 #include <Trappist-1\Scenes.hpp>
 #include <iostream>
@@ -11,106 +15,9 @@
 #include <Trappist-1\util\TexturePacker.hpp>
 #include <Trappist-1\TextureAtlas.hpp>
 
-#include <Trappist-1\graphics\light\LightRenderer2D.hpp>
-
 #include <Trappist-1\World.hpp>
 
-//#define TESTING
-#ifdef TESTING
-
-void printElapsed(const Timer &timer)
-{
-	std::cout << "Elapsed time: " << timer.elapsedMilliseconds() << "ms";
-}
-
-void printElapsedStats(const Timer &timer, size_t count, size_t amount)
-{
-	double elapsed = timer.elapsedNanoseconds();
-	std::cout << "Elapsed time: " << elapsed << "ns (total), " << elapsed / static_cast<double>(count * amount) << "ns (average)\n\n";
-}
-
-#define TYPE char
-
-void prepareTest(Timer &timer, TYPE *src, size_t amount)
-{
-	for (size_t i = 0; i < amount; ++i)
-		src[i] = i;
-	timer.reset();
-}
-
-int main()
-{
-	Timer t;
-
-	constexpr size_t count = 5;
-	constexpr size_t amount = 1'000'000'000;
-	constexpr size_t bytes = amount * sizeof(TYPE);
-
-	for (size_t x = 0; x < count; ++x)
-	{
-		std::cout << "Allocating " << static_cast<long double>(bytes) / 1'000'000.0 << " mega bytes of memory...";
-		TYPE *src = new TYPE[amount];
-		std::cout << " done\n";
-
-		std::cout << "Deallocating " << static_cast<long double>(bytes) / 1'000'000.0 << " mega bytes of memory...";
-		delete[] src;
-		std::cout << " done\n";
-	}
-
-	return 0;
-
-	std::cout << "Allocating " << static_cast<long double>(bytes) / 1'000'000.0 << " mega bytes of memory...";
-	TYPE *src = new TYPE[amount];
-	std::cout << " done\n";
-	std::cout << "Allocating " << static_cast<long double>(bytes) / 1'000'000.0 << " mega bytes of memory...";
-	TYPE *dst = new TYPE[amount];
-	std::cout << " done\n";
-	//TYPE src[count];
-	//TYPE dst[count];
-
-	std::cout << "for loop (pre inc):\n";
-	prepareTest(t, src, amount);
-	for (size_t x = 0; x < count; ++x)
-	{
-		for (size_t i = 0; i < amount; ++i)
-			dst[i] = src[i];
-	}
-	printElapsedStats(t, count, amount);
-
-	std::cout << "for loop (post inc):\n";
-	prepareTest(t, src, amount);
-	for (size_t x = 0; x < count; ++x)
-	{
-		for (size_t i = 0; i < amount; i++)
-			dst[i] = src[i];
-	}
-	printElapsedStats(t, count, amount);
-
-	std::cout << "memcopy:\n";
-	prepareTest(t, src, amount);
-	for (size_t x = 0; x < count; ++x)
-	{
-		memcpy(dst, src, bytes);
-	}
-	printElapsedStats(t, count, amount);
-
-	std::cout << "std::copy:\n";
-	prepareTest(t, src, amount);
-	for (size_t x = 0; x < count; ++x)
-	{
-		std::copy(dst, dst + amount, src);
-	}
-	printElapsedStats(t, count, amount);
-
-	std::cout << "end\n";
-
-	delete[] dst;
-	delete[] src;
-
-	return 0;
-}
-
-#else
+#include <Trappist-1\util\DebugLog.hpp>
 
 int main()
 {
@@ -120,25 +27,23 @@ int main()
 	return 0;
 }
 
-#endif // TESTING
-
 bool Core::running = false;
-sf::Vector2i Core::windowSize;
+glm::ivec2 Core::windowSize;
 Scene *Core::scene = nullptr;
 Font Core::font;
-SceneType Core::queriedScene = SceneType::NONE;
+Scene::Type Core::queriedScene = Scene::Type::NONE;
 
 Core::Core()
 {
-	windowSize = createWindow();
-	//scene = new Scene();
+	createWindow();
+
 	TexturePacker::packDirectory("res/textures/tiles", "res/textures/tiles", 128, 128);
 	TexturePacker::packDirectory("res/textures/system", "res/textures/system", 300, 700);
 	TexturePacker::packDirectory("res/textures/entities/shadow-slime", "res/textures/entities/shadow-slime", 128, 128);
 	TexturePacker::packDirectory("res/textures/entities/player", "res/textures/entities/player-test", 128, 128);
 	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
 	//font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
-	changeScene(SceneType::GAME);
+	changeScene(Scene::Type::GAME);
 }
 
 Core::~Core() 
@@ -152,18 +57,10 @@ void Core::run()
 {
 	{
 		GLenum err = glewInit();
-		if (err != GLEW_OK)
-		{
-			std::cout << "Error: " << glewGetErrorString(err) << "\n";
-			__debugbreak();
-		}
-		else
-			std::cout << "Status: Using GLEW " << glewGetString(GLEW_VERSION) << "\n";
+		IF_ELSE(err != GLEW_OK,
+			ERR("Error: " << glewGetErrorString(err)),
+			LOG("Status: Using GLEW " << glewGetString(GLEW_VERSION)));
 	}
-
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	running = true;
 	sf::Event event;
@@ -180,6 +77,7 @@ void Core::run()
 	shader2d.setUniform1i("lightMap", 10);
 
 	Renderer2D renderer2d;
+	renderer2d.setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	renderer2d.setShader(&shader2d);
 	renderer2d.setFontShader(&fontShader);
 
@@ -188,10 +86,6 @@ void Core::run()
 
 	Timer testTimer;
 
-
-	glm::vec2 edges(150.0f, 200.0f);
-	float factor = 60.0f;
-	bool up = false;
 	while (running)
 	{
 		Time::deltaTime = deltaTimer.elapsedSeconds();
@@ -235,31 +129,14 @@ void Core::run()
 			changeScene(queriedScene);
 
 		scene->update();
-		
-		if (up)
-		{
-			edges.x += Time::deltaTime * factor;
-			if (edges.x > 152.0f)
-				up = false;
-		}
-		else
-		{
-			edges.x -= Time::deltaTime * factor;
-			if (edges.x < 148.0f)
-				up = true;
-		}
 
-		//lightRenderer2d.getShader()->setUniform4f("defaultColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		lightRenderer2d.setDefaultLightColor(glm::vec4(0.1f, 0.1f, 0.3f, 1.0f));
+		// Render lights
 		lightRenderer2d.begin();
-		lightRenderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
-		lightRenderer2d.submitLight2D(glm::vec2(0.0f, 0.0f), glm::vec4(0.7f, 0.6f, 0.5f, 1.0f), edges);
-		lightRenderer2d.popMatrix();
+		scene->renderLights(lightRenderer2d);
 		lightRenderer2d.end();
 		lightRenderer2d.flush();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Render sprites + fonts
 		renderer2d.begin();
 		testTimer.reset();
 		scene->render(renderer2d);
@@ -275,30 +152,30 @@ void Core::run()
 		if (secondTimer.elapsedSeconds() >= 1.0f)
 		{
 			secondTimer.reset();
-			//std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
+			std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
 			countedFPS = 0;
 		}
 	}
 }
 
-sf::Vector2i Core::createWindow()
+void Core::createWindow()
 {
 	//sf::VideoMode bestMode = sf::VideoMode::getFullscreenModes().front();
-	//sf::Vector2i size(bestMode.width, bestMode.height);
+	//windowSize.x = bestMode.width;
+	//windowSize.y = bestMode.height;
 	//window = new sf::Window(bestMode, "Trappist-1", sf::Style::Fullscreen);
 
-	sf::Vector2i size(800, 480);
-	window = new sf::Window(sf::VideoMode(size.x, size.y), "Trappist-1", 7u, sf::ContextSettings(8));
+	windowSize.x = 800;
+	windowSize.y = 480;
+	window = new sf::Window(sf::VideoMode(windowSize.x, windowSize.y), "Trappist-1", 7u, sf::ContextSettings(8));
 	//window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 	window->setActive();
-
-	return size;
 }
 
 //Static Methods:
 
-void Core::changeScene(SceneType type)
+void Core::changeScene(Scene::Type type)
 {
 	queriedScene = type;
 	delete scene;
@@ -306,16 +183,16 @@ void Core::changeScene(SceneType type)
 	switch (type)
 	{
 	default:
-	case SceneType::MENU:
+	case Scene::Type::MENU:
 		scene = new SceneMenu;
 		break;
-	case SceneType::GAME:
+	case Scene::Type::GAME:
 		scene = new SceneGame;
 		break;
 	}
 }
 
-void Core::queryScene(SceneType type)
+void Core::queryScene(Scene::Type type)
 {
 	queriedScene = type;
 }

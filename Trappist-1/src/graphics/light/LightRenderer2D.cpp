@@ -65,6 +65,9 @@ void LightRenderer2D::flush()
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	glEnable(GL_POINT_SPRITE);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, dataBuffers[LightRenderer2D::DATA_BUFFERS_FBO_INDEX]);
 	glClearColor(defaultLightColor.r, defaultLightColor.g, defaultLightColor.b, defaultLightColor.a);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -77,6 +80,8 @@ void LightRenderer2D::flush()
 
 	lightShader->disable();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glDisable(GL_BLEND);
 }
 
 void LightRenderer2D::createColorTextureAttachment(GLsizei width, GLsizei height)

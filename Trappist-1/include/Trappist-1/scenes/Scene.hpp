@@ -1,49 +1,40 @@
 #pragma once
 
-enum class SceneType
-{
-	NONE,
-	GAME,
-	MENU
-};
-
-#include <SFML\Graphics.hpp>
-
 #include <Trappist-1\ui\Screen.hpp>
-#include <Trappist-1\util\Time.hpp>
 
 class Renderer2D;
-
+class LightRenderer2D;
 class Scene : public ui::Screen
 {
 	friend class Core;
 public:
-	Scene() {  }
-	virtual ~Scene() { }
+	enum class Type { NONE, GAME, MENU };
+
+	Scene();
+	virtual ~Scene();
 
 	// Updates the Scene.
-	virtual void update()
-	{
-		Screen::update(Time::deltaTime);
-	}
+	virtual void update();
 
-	// Renders the Scene.
-	virtual void render(Renderer2D &renderer2d)
-	{
-		submit(renderer2d);
-	}
+	// Renders the light into the scene. This function should be called before the actual render.
+	virtual void renderLights(LightRenderer2D &lightRenderer2d);
+
+	// Renders the scene.
+	virtual void render(Renderer2D &renderer2d);
 
 	// Event being called when the size of the window has been changed.
-	virtual void onSizeChanged(unsigned int width, unsigned int height) {}
+	virtual void onSizeChanged(unsigned int width, unsigned int height);
 
 	// Returns what kind of scene it is.
-	SceneType getSceneType() const;
+	Scene::Type getSceneType() const;
 
 protected:
-	SceneType type;
+	Scene::Type type;
 };
 
-inline SceneType Scene::getSceneType() const
+// Inline
+
+inline Scene::Type Scene::getSceneType() const
 {
-	return type;
+	return this->type;
 }

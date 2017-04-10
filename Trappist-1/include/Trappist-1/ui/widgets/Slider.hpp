@@ -31,10 +31,10 @@ namespace ui
 		void setKnobTexture(const Texture *texture);
 
 		// Returns the texture rect for all vertices measured by a value between 0 and 1.
-		sf::FloatRect getKnobTextureRect() const;
+		FloatRect getKnobTextureRect() const;
 
 		// Sets the texture rect for all vertices measured by a value between 0 and 1.
-		void setKnobTextureRect(const sf::FloatRect &rect);
+		void setKnobTextureRect(const FloatRect &rect);
 
 	protected:
 		virtual void performSubmittion(Renderer2D &renderer2d) const override;

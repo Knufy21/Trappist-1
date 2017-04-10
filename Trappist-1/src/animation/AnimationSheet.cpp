@@ -107,13 +107,13 @@ const Animation *AnimationSheet::getAnimationByName(const std::string &animation
 	return nullptr;
 }
 
-sf::FloatRect AnimationSheet::getTextureRectByState(Animation::state_t state) const
+FloatRect AnimationSheet::getTextureRectByState(Animation::state_t state) const
 {
 	float x, y;
 	Animation::state_t verticalSpriteCount;
 	verticalSpriteCount = getTexture()->getSize().x / frameSize.x;
 	x = static_cast<float>(state % verticalSpriteCount) * frameSize.x;
 	y = static_cast<float>(state / verticalSpriteCount) * frameSize.y;
-	return sf::FloatRect(x / getTexture()->getSize().x, y / getTexture()->getSize().y,
+	return FloatRect(x / getTexture()->getSize().x, y / getTexture()->getSize().y,
 		frameSize.x / getTexture()->getSize().x, frameSize.y / getTexture()->getSize().y);
 }

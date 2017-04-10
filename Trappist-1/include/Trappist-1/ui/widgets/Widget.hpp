@@ -4,7 +4,7 @@
 #include <memory>
 #include <algorithm>
 
-#include <SFML\Graphics.hpp>
+#include <Trappist-1\graphics\Rect.hpp>
 #include <Trappist-1\graphics\Transform2D.hpp>
 #include <Trappist-1\graphics\Vertex2D.hpp>
 #include <Trappist-1\graphics\Texture.hpp>
@@ -69,13 +69,13 @@ namespace ui
 		void setColor(const glm::vec4 &color);
 
 		// Sets the color of the widget. (new, not implemented)
-		void setColor(const sf::Color &color);
+		//void setColor(const sf::Color &color);
 
 		// Returns the local bounds of the widget, which have no transformations applied.
-		sf::FloatRect getLocalBounds() const;
+		FloatRect getLocalBounds() const;
 
 		// Returns the global bounds of the widget, which have all transformations applied.
-		sf::FloatRect getGlobalBounds() const;
+		FloatRect getGlobalBounds() const;
 
 		// Returns the visibility of the widget.
 		bool isVisible() const;
@@ -90,13 +90,13 @@ namespace ui
 		void setTexture(const Texture *texture, bool resetTexCoords = true);
 
 		// Returns the texture rect of all vertices measured by a value between 0 and 1.
-		sf::FloatRect getTextureRect() const;
+		FloatRect getTextureRect() const;
 
 		// Sets the texture rect for all vertices measured in pixels.
-		void setTextureRect(const sf::IntRect &rect);
+		void setTextureRect(const IntRect &rect);
 
 		// Sets the texture rect for all vertices measured by a value between 0 and 1.
-		void setTextureRect(const sf::FloatRect &rect);
+		void setTextureRect(const FloatRect &rect);
 
 		// CONTROL
 

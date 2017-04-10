@@ -1,7 +1,9 @@
 #pragma once
 
-#include <SFML\Window.hpp>
-#include <SFML\System\Vector2.hpp>
+#include <glm\glm.hpp>
+#include <SFML\Window\Window.hpp>
+#include <SFML\Window\Mouse.hpp>
+#include <SFML\Window\Keyboard.hpp>
 
 namespace Input
 {
@@ -32,5 +34,5 @@ namespace Input
 	bool getMouseUp(sf::Mouse::Button button);
 
 	// Return the position of the mouse in the window
-	sf::Vector2i getMousePos();
+	glm::ivec2 getMousePos();
 }

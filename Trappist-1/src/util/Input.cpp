@@ -57,8 +57,9 @@ namespace Input
 		return !sf::Mouse::isButtonPressed(button) && buttonsPressedLast[button];
 	}
 
-	sf::Vector2i getMousePos()
+	glm::ivec2 getMousePos()
 	{
-		return sf::Mouse::getPosition(*window);
+		sf::Vector2i pos = sf::Mouse::getPosition(*window);
+		return glm::ivec2(pos.x, pos.y);
 	}
 }

@@ -1,10 +1,12 @@
 #include <Trappist-1\util\TexturePacker.hpp>
 
-#include <SFML\Graphics\Image.hpp>
-
 #include <fstream>
 #include <vector>
 #include <filesystem>
+
+#include <SFML\Graphics\Image.hpp>
+
+#include <Trappist-1\graphics\Rect.hpp>
 
 namespace std
 {
@@ -226,7 +228,7 @@ namespace TexturePacker
 			
 
 			// Write rect values
-			sf::FloatRect rect
+			FloatRect rect
 			{
 				static_cast<float>(left) / static_cast<float>(width),
 				static_cast<float>(top) / static_cast<float>(height),

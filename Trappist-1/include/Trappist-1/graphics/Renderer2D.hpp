@@ -1,7 +1,7 @@
 #pragma once
 
+#include <vector>
 #include <GL\glew.h>
-#include <SFML\Graphics.hpp>
 #include <Trappist-1\graphics\Vertex2D.hpp>
 #include <Trappist-1\graphics\Texture.hpp>
 
@@ -62,6 +62,15 @@ public:
 
 	// Sets the shader being used to render fonts.
 	void setFontShader(Shader *fontShader);
+
+	// Returns the color used to clear the color buffer.
+	const glm::vec4 &getClearColor() const;
+
+	// Sets the color used to clear the color buffer.
+	void setClearColor(const glm::vec4 &clearColor);
+
+	// Sets the color used to clear the color buffer.
+	void setClearColor(float r, float g, float b, float a);
 
 	// Pushes the specified matrix multiplied with the top matrix onto the transformation stack.
 	void pushMatrix(const glm::mat3 &matrix);
@@ -159,9 +168,32 @@ private:
 
 	// Viewport information for position transforming
 	GLint viewport[4];
+
+	// Color used to clear the color buffer.
+	glm::vec4 clearColor;
+
+	GLuint fontUniformLocations[7];
 };
 
 // Inline
+
+inline const glm::vec4 &Renderer2D::getClearColor() const
+{
+	return this->clearColor;
+}
+
+inline void Renderer2D::setClearColor(const glm::vec4 &clearColor)
+{
+	this->clearColor = clearColor;
+}
+
+inline void Renderer2D::setClearColor(float r, float g, float b, float a)
+{
+	this->clearColor.r = r;
+	this->clearColor.g = g;
+	this->clearColor.b = b;
+	this->clearColor.a = a;
+}
 
 //inline const glm::vec2 &Renderer2D::getOffset() const
 //{

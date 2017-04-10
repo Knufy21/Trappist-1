@@ -119,18 +119,18 @@ glm::vec2 Transform2D::transformPoint(const glm::vec2 &point) const
 	return glm::vec2(getTransform() * glm::vec3(point.x, point.y, 1.0f));
 }
 
-sf::FloatRect Transform2D::transformRect(float left, float top, float width, float height) const
+FloatRect Transform2D::transformRect(float left, float top, float width, float height) const
 {
 	glm::vec2 tl = transformPoint(left, top);
 	glm::vec2 br = transformPoint(left + width, top + height);
-	return sf::FloatRect(tl.x, tl.y, br.x, br.y);
+	return FloatRect(tl.x, tl.y, br.x, br.y);
 }
 
-sf::FloatRect Transform2D::transformRect(const sf::FloatRect &rect) const
+FloatRect Transform2D::transformRect(const FloatRect &rect) const
 {
 	glm::vec2 tl = transformPoint(rect.left, rect.top);
 	glm::vec2 br = transformPoint(rect.left + rect.width, rect.top + rect.height);
-	return sf::FloatRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
+	return FloatRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
 }
 
 void Transform2D::ensureUpdate() const

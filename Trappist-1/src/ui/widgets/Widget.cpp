@@ -167,8 +167,8 @@ namespace ui
 		}
 	}
 
-	void Widget::setColor(const sf::Color &color)
-	{
+	//void Widget::setColor(const sf::Color &color)
+	//{
 		//vertices[0].color = color;
 		//vertices[1].color = color;
 		//vertices[2].color = color;
@@ -189,17 +189,17 @@ namespace ui
 		//	vertices[14].color = color;
 		//	vertices[15].color = color;
 		//}
-	}
+	//}
 
-	sf::FloatRect Widget::getLocalBounds() const
+	FloatRect Widget::getLocalBounds() const
 	{
 		if(this->texture && this->texture->isSplit())
-			return sf::FloatRect(0.0f, 0.0f, vertices[15].position.x, vertices[15].position.y);
+			return FloatRect(0.0f, 0.0f, vertices[15].position.x, vertices[15].position.y);
 		else
-			return sf::FloatRect(0.0f, 0.0f, vertices[2].position.x, vertices[2].position.y);
+			return FloatRect(0.0f, 0.0f, vertices[2].position.x, vertices[2].position.y);
 	}
 
-	sf::FloatRect Widget::getGlobalBounds() const
+	FloatRect Widget::getGlobalBounds() const
 	{
 		return transformRect(getLocalBounds());
 	}
@@ -222,26 +222,26 @@ namespace ui
 		this->texture = texture;
 
 		if (resetTexCoords)
-			setTextureRect(sf::FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
+			setTextureRect(FloatRect(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
-	sf::FloatRect Widget::getTextureRect() const
+	FloatRect Widget::getTextureRect() const
 	{
 		if (this->texture && this->texture->isSplit())
-			return sf::FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[15].texCoord.x - vertices[0].texCoord.x, vertices[15].texCoord.y - vertices[0].texCoord.y);
-		return sf::FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[2].texCoord.x - vertices[0].texCoord.x, vertices[2].texCoord.y - vertices[0].texCoord.y);
+			return FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[15].texCoord.x - vertices[0].texCoord.x, vertices[15].texCoord.y - vertices[0].texCoord.y);
+		return FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[2].texCoord.x - vertices[0].texCoord.x, vertices[2].texCoord.y - vertices[0].texCoord.y);
 	}
 
-	void Widget::setTextureRect(const sf::IntRect &rect)
+	void Widget::setTextureRect(const IntRect &rect)
 	{
-		setTextureRect(sf::FloatRect(
+		setTextureRect(FloatRect(
 			static_cast<float>(rect.left) / static_cast<float>(texture->getSize().x),
 			static_cast<float>(rect.top) / static_cast<float>(texture->getSize().y),
 			static_cast<float>(rect.width) / static_cast<float>(texture->getSize().x),
 			static_cast<float>(rect.height) / static_cast<float>(texture->getSize().y)));
 	}
 
-	void Widget::setTextureRect(const sf::FloatRect &rect)
+	void Widget::setTextureRect(const FloatRect &rect)
 	{
 		if (this->texture && this->texture->isSplit())
 		{

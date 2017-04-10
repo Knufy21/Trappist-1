@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
 #include <Trappist-1\graphics\Transform2D.hpp>
 #include <Trappist-1\graphics\Texture.hpp>
 #include <Trappist-1\graphics\Vertex2D.hpp>
@@ -45,10 +44,10 @@ public:
 	void setTexture(const Texture *texture);
 
 	// Returns the texture rect of the entity with the values ranging from 0.0f to 1.0f.
-	sf::FloatRect getTextureRect() const;
+	FloatRect getTextureRect() const;
 
 	// Sets the texture rect of the entity  with the values ranging from 0.0f to 1.0f.
-	void setTextureRect(const sf::FloatRect &textureRect);
+	void setTextureRect(const FloatRect &textureRect);
 
 	// Sets the texture rect of the entity  with the values ranging from 0.0f to 1.0f.
 	void setTextureRect(float left, float top, float width, float height);
@@ -102,9 +101,9 @@ inline const Texture *Entity::getTexture() const
 	return this->texture;
 }
 
-inline sf::FloatRect Entity::getTextureRect() const
+inline FloatRect Entity::getTextureRect() const
 {
-	return sf::FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[2].texCoord.x, vertices[2].texCoord.y);
+	return FloatRect(vertices[0].texCoord.x, vertices[0].texCoord.y, vertices[2].texCoord.x, vertices[2].texCoord.y);
 }
 
 inline bool Entity::isDead() const

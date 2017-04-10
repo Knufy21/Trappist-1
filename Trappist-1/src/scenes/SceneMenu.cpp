@@ -16,7 +16,7 @@ SceneMenu::SceneMenu()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	
-	type = (SceneType::MENU);
+	type = (Scene::Type::MENU);
 
 	lblTitle.setFont(Core::font);
 	lblTitle.setColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -85,7 +85,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1b.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1b);
@@ -121,7 +121,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1c.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1c);
@@ -156,7 +156,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1d.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1d);
@@ -191,7 +191,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1e.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1e);
@@ -226,7 +226,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1f.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1f);
@@ -261,7 +261,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1g.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1g);
@@ -296,7 +296,7 @@ SceneMenu::SceneMenu()
 		{
 			this->imgTrappist1h.addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonPressTime));
 
-			Core::queryScene(SceneType::GAME);
+			Core::queryScene(Scene::Type::GAME);
 		}
 	}));
 	addWidget(&imgTrappist1h);
@@ -487,7 +487,7 @@ void SceneMenu::onSizeChanged(unsigned int width, unsigned int height)
 
 	/* objects */
 
-	sf::FloatRect rect = imgTrappist1a.getTextureRect();
+	FloatRect rect = imgTrappist1a.getTextureRect();
 	imgTrappist1a.setSize(((rect.width * imgTrappist1a.getTexture()->getSize().x) / (rect.height * imgTrappist1a.getTexture()->getSize().y)) * heightf, heightf);
 
 	constexpr float objectHeightMultiplicator = 0.15f;
@@ -527,9 +527,9 @@ void SceneMenu::onSizeChanged(unsigned int width, unsigned int height)
 	imgTrappist1h.setOrigin(imgTrappist1h.getSize() * 0.5f);
 	imgTrappist1h.setPosition(widthf * 0.92f, heightf * 0.5f);
 
-	btnCredits.setPosition(widthf * 0.8f, heightf * 0.8 - 60);
-	btnOptions.setPosition(widthf * 0.8f, heightf * 0.8);
-	btnQuit.setPosition(widthf * 0.8f, heightf * 0.8 + 60);
+	btnCredits.setPosition(widthf * 0.8f, heightf * 0.8f - 60.0f);
+	btnOptions.setPosition(widthf * 0.8f, heightf * 0.8f);
+	btnQuit.setPosition(widthf * 0.8f, heightf * 0.8f + 60.0f);
 
 	lblTitle.setPosition(widthh, heightf * 0.01f);
 

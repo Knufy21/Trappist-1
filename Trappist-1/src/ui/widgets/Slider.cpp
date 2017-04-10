@@ -143,15 +143,15 @@ namespace ui
 		this->texKnob = texture;
 	}
 
-	sf::FloatRect Slider::getKnobTextureRect() const
+	FloatRect Slider::getKnobTextureRect() const
 	{
 		if (this->texKnob && this->texKnob->isSplit())
-			return sf::FloatRect(knobVertices[0].texCoord.x, knobVertices[0].texCoord.y, knobVertices[15].texCoord.x - knobVertices[0].texCoord.x, knobVertices[15].texCoord.y - knobVertices[0].texCoord.y);
+			return FloatRect(knobVertices[0].texCoord.x, knobVertices[0].texCoord.y, knobVertices[15].texCoord.x - knobVertices[0].texCoord.x, knobVertices[15].texCoord.y - knobVertices[0].texCoord.y);
 		else
-			return sf::FloatRect(knobVertices[0].texCoord.x, knobVertices[0].texCoord.y, knobVertices[2].texCoord.x - knobVertices[0].texCoord.x, knobVertices[2].texCoord.y - knobVertices[0].texCoord.y);
+			return FloatRect(knobVertices[0].texCoord.x, knobVertices[0].texCoord.y, knobVertices[2].texCoord.x - knobVertices[0].texCoord.x, knobVertices[2].texCoord.y - knobVertices[0].texCoord.y);
 	}
 
-	void Slider::setKnobTextureRect(const sf::FloatRect &rect)
+	void Slider::setKnobTextureRect(const FloatRect &rect)
 	{
 		if (this->texKnob && this->texKnob->isSplit())
 		{
@@ -305,7 +305,7 @@ namespace ui
 
 		if (isEnabled())
 		{
-			sf::FloatRect bounds = getGlobalBounds();
+			FloatRect bounds = getGlobalBounds();
 			glm::vec2 offset(Input::getMousePos().x - bounds.left, Input::getMousePos().y - bounds.top);
 			setProgress((offset.x) / bounds.width);
 		}
@@ -317,7 +317,7 @@ namespace ui
 
 		if (isEnabled() && isPressed())
 		{
-			sf::FloatRect bounds = getGlobalBounds();
+			FloatRect bounds = getGlobalBounds();
 			glm::vec2 offset(Input::getMousePos().x - bounds.left, Input::getMousePos().y - bounds.top);
 			setProgress((offset.x) / bounds.width);
 		}

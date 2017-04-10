@@ -66,7 +66,7 @@ void Animator::ensureStateUpdate()
 {
 	if (bools.get(Animator::BOOL_ARRAY_NEEDS_UPDATE))
 	{
-		sf::FloatRect rect = animationSheet->getTextureRectByState(getState());
+		FloatRect rect = animationSheet->getTextureRectByState(getState());
 		if (animation->isFlippedHorizontally())
 		{
 			rect.left += rect.width;

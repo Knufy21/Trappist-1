@@ -35,7 +35,6 @@ void Entity::render(Renderer2D &renderer2d)
 {
 	renderer2d.pushMatrix(getTransform());
 	renderer2d.submit4(vertices, texture, getPosition().y / -World::HALF_HEIGHT_F);
-	//std::cout << "depth: " << getPosition().y / World::HALF_HEIGHT_F << "\n";
 	renderer2d.popMatrix();
 }
 
@@ -57,7 +56,7 @@ void Entity::setTexture(const Texture *texture)
 	this->texture = texture;
 }
 
-void Entity::setTextureRect(const sf::FloatRect &textureRect)
+void Entity::setTextureRect(const FloatRect &textureRect)
 {
 	vertices[0].texCoord.x = textureRect.left;
 	vertices[0].texCoord.y = textureRect.top;

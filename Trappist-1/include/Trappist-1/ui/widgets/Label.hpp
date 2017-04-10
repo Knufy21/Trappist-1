@@ -1,9 +1,9 @@
 #pragma once
 
+#include <string>
+
 #include <Trappist-1\ui\widgets\Image.hpp>
 #include <Trappist-1\graphics\fonts\Font.hpp>
-
-#include <string>
 
 namespace ui
 {

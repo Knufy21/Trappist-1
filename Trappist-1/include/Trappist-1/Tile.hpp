@@ -24,7 +24,7 @@ public:
 	};
 
 	const char *name;
-	sf::FloatRect textureRect;
+	FloatRect textureRect;
 	glm::vec4 color;
 
 	Tile();

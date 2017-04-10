@@ -34,6 +34,13 @@ void Renderer2D::setFontShader(Shader *fontShader)
 	std::string s("textures[");
 	for (int i = 0; i < 32; ++i)
 		fontShader->setUniform1i((s + std::to_string(i) + "]").c_str(), i);
+	fontUniformLocations[0] = fontShader->getUniformLocation("thickness");
+	fontUniformLocations[1] = fontShader->getUniformLocation("color");
+	fontUniformLocations[2] = fontShader->getUniformLocation("edge");
+	fontUniformLocations[3] = fontShader->getUniformLocation("outlineThickness");
+	fontUniformLocations[4] = fontShader->getUniformLocation("outlineColor");
+	fontUniformLocations[5] = fontShader->getUniformLocation("outlineOffset");
+	fontUniformLocations[6] = fontShader->getUniformLocation("outlineEdge");
 	fontShader->disable();
 }
 
@@ -393,6 +400,13 @@ void Renderer2D::flush()
 	//glDisable(GL_CULL_FACE);
 	//glEnable(GL_SCISSOR_TEST);
 
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Flush standard vertices
 	if (shader)
 		shader->enable();
@@ -420,6 +434,8 @@ void Renderer2D::flush()
 
 	// Flush font vertices
 
+	glDisable(GL_DEPTH_TEST);
+
 	if (fontShader)
 		fontShader->enable();
 	
@@ -440,13 +456,13 @@ void Renderer2D::flush()
 		// Set Textproperties
 		constexpr float mul = 16.0f / 26.0f; // change the second value for adjustments (the bigger the more smooth)
 		float edgeSize = 1.0f / (static_cast<float>(labels[i]->getFontSize()) * mul);
-		fontShader->setUniform1f("thickness", labels[i]->getTextThickness());
-		fontShader->setUniform4f("color", labels[i]->getTextColor());
-		fontShader->setUniform1f("edge", edgeSize);
-		fontShader->setUniform1f("outlineThickness", (labels[i]->getTextOutlineThickness() == 0.0f) ? 0.0f : labels[i]->getTextOutlineThickness() + labels[i]->getTextThickness());
-		fontShader->setUniform4f("outlineColor", labels[i]->getTextOutlineColor());
-		fontShader->setUniform2f("outlineOffset", labels[i]->getTextOutlineOffset());
-		fontShader->setUniform1f("outlineEdge", edgeSize + labels[i]->getTextOutlineBlur());
+		fontShader->setUniform1f(fontUniformLocations[0], labels[i]->getTextThickness());
+		fontShader->setUniform4f(fontUniformLocations[1], labels[i]->getTextColor());
+		fontShader->setUniform1f(fontUniformLocations[2], edgeSize);
+		fontShader->setUniform1f(fontUniformLocations[3], (labels[i]->getTextOutlineThickness() == 0.0f) ? 0.0f : labels[i]->getTextOutlineThickness() + labels[i]->getTextThickness());
+		fontShader->setUniform4f(fontUniformLocations[4], labels[i]->getTextOutlineColor());
+		fontShader->setUniform2f(fontUniformLocations[5], labels[i]->getTextOutlineOffset());
+		fontShader->setUniform1f(fontUniformLocations[6], edgeSize + labels[i]->getTextOutlineBlur());
 		//reinterpret_cast<FontShader*>(fontShader)->setColor(labels[i]->getTextColor());
 		//reinterpret_cast<FontShader*>(fontShader)->setEdge(edgeSize);
 		//reinterpret_cast<FontShader*>(fontShader)->setOutlineThickness((labels[i]->getTextOutlineThickness() == 0.0f) ? 0.0f : labels[i]->getTextOutlineThickness() + labels[i]->getTextThickness()/* + edgeSize*/);
@@ -461,7 +477,8 @@ void Renderer2D::flush()
 	//(GL_TRIANGLES, fontIndexCount, RENDERER2D_ELEMENT_INDEX_GL_MACRO_TYPE, reinterpret_cast<void*>(RENDERER2D_FONT_INDEX_BUFFER_OFFSET * sizeof(RENDERER2D_ELEMENT_INDEX_GL_MACRO_TYPE)));
 	glBindVertexArray(0);
 
-	//glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	//glDisable(GL_SCISSOR_TEST);
 }

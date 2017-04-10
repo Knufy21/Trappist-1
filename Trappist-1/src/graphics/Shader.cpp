@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <Trappist-1\util\DebugLog.hpp>
 
 Shader::Shader()
 	: programID(0)
@@ -196,22 +197,10 @@ GLuint Shader::loadShader(GLenum shaderType, const GLchar *shaderPath)
 {
 	// Read shader code
 	std::ifstream shaderFile(shaderPath);
-	if (!shaderFile.good())
-		std::cout << "Failed to open shader file '" << shaderPath << "'" << std::endl;
-
-	//std::stringstream buffer;
-	//buffer << shaderFile.rdbuf();
-	std::string shaderCode = std::string(std::istreambuf_iterator<char>(shaderFile), std::istreambuf_iterator<char>());
-
-	//shaderFile.seekg(0, std::ios::end);
-	//shaderCode.reserve(shaderFile.tellg());
-	//shaderFile.seekg(0, std::ios::beg);
-	//
-	//shaderCode.assign((std::istreambuf_iterator<char>(shaderFile)),std::istreambuf_iterator<char>());
-
-	//std::string shaderCode(buffer.str());
+	ERR_IF(!shaderFile.good(), "Failed to open shader file '" << shaderPath << "'");
 
 	// Process shader code
+	std::string shaderCode(std::istreambuf_iterator<char>(shaderFile), (std::istreambuf_iterator<char>()));
 	const GLchar *shaderCodeAdapter = shaderCode.c_str();
 
 	// Create and compile shader

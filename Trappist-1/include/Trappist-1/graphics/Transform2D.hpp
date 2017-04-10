@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
 #include <glm\glm.hpp>
+#include <Trappist-1\graphics\Rect.hpp>
 
 class Transform2D
 {
@@ -57,10 +57,10 @@ public:
 	glm::vec2 transformPoint(const glm::vec2 &point) const;
 
 	// Transformes a rectangle with the transforms matrix.
-	sf::FloatRect transformRect(float left, float top, float width, float height) const;
+	FloatRect transformRect(float left, float top, float width, float height) const;
 
 	// Transformes a rectangle with the transforms matrix.
-	sf::FloatRect transformRect(const sf::FloatRect &rect) const;
+	FloatRect transformRect(const FloatRect &rect) const;
 
 	// Returns the position of the transform.
 	const glm::vec2 &getPosition() const;

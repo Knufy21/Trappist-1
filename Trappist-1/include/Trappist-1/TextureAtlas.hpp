@@ -1,16 +1,14 @@
 #pragma once
 
-#include <SFML\Graphics\Rect.hpp>
-
-#include <Trappist-1\graphics\Texture.hpp>
-
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+
+#include <Trappist-1\graphics\Rect.hpp>
+#include <Trappist-1\graphics\Texture.hpp>
 
 class TextureAtlas
 {
 public:
-
 	TextureAtlas();
 
 	// Loads the texture altas with the specified file name without extension and returns true if it has been successful.
@@ -25,7 +23,7 @@ public:
 	const Texture *getTexture() const;
 
 	// Returns the texture coords of the with name specified texture part.
-	const sf::FloatRect &getTexCoord(const std::string &name) const;
+	const FloatRect &getTexCoord(const std::string &name) const;
 
 	// Returns the smooth property of the texture.
 	bool isSmooth() const;
@@ -35,7 +33,7 @@ public:
 
 private:
 	Texture texture;
-	std::unordered_map<std::string, sf::FloatRect> texCoords;
+	std::unordered_map<std::string, FloatRect> texCoords;
 };
 
 // Inline
@@ -45,7 +43,7 @@ inline const Texture *TextureAtlas::getTexture() const
 	return &this->texture;
 }
 
-inline const sf::FloatRect &TextureAtlas::getTexCoord(const std::string &name) const
+inline const FloatRect &TextureAtlas::getTexCoord(const std::string &name) const
 {
 	return texCoords.find(name)->second;
 }

@@ -2,10 +2,10 @@
 
 #include <string>
 #include <unordered_map>
-#include <SFML\Graphics\Rect.hpp>
+#include <glm\glm.hpp>
+#include <Trappist-1\graphics\Rect.hpp>
 #include <Trappist-1\animation\Animation.hpp>
 #include <Trappist-1\graphics\Texture.hpp>
-#include <glm\glm.hpp>
 #include <Trappist-1\TextureManager.hpp>
 
 class AnimationSheet
@@ -23,7 +23,7 @@ public:
 	const Texture *getTexture() const;
 
 	// Returns the texture rect of the frame associated with the specified state.
-	sf::FloatRect getTextureRectByState(Animation::state_t state) const;
+	FloatRect getTextureRectByState(Animation::state_t state) const;
 
 private:
 	TextureManager::TextureHandle textureHandle;

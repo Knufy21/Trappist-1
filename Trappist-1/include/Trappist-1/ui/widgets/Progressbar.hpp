@@ -42,10 +42,10 @@ namespace ui
 		void setProgressStyle(Style progressStyle);
 
 		// Returns the texture rect for all vertices measured by a value between 0 and 1.
-		const sf::FloatRect &getProgressTextureRect() const;
+		const FloatRect &getProgressTextureRect() const;
 
 		// Sets the texture rect for all vertices measured by a value between 0 and 1.
-		void setProgressTextureRect(const sf::FloatRect &rect);
+		void setProgressTextureRect(const FloatRect &rect);
 
 		// Ensures the progress to be updated.
 		void ensureProgressUpdate() const;
@@ -62,7 +62,7 @@ namespace ui
 		const Texture *texProgress;
 		Style progressStyle;
 		float progressFraction;
-		sf::FloatRect progressTextureRect;
+		FloatRect progressTextureRect;
 		mutable bool needsProgressUpdate;
 	};
 
@@ -108,12 +108,12 @@ namespace ui
 		this->needsProgressUpdate = true;
 	}
 
-	inline const sf::FloatRect &Progressbar::getProgressTextureRect() const
+	inline const FloatRect &Progressbar::getProgressTextureRect() const
 	{
 		return this->progressTextureRect;
 	}
 
-	inline void Progressbar::setProgressTextureRect(const sf::FloatRect &rect)
+	inline void Progressbar::setProgressTextureRect(const FloatRect &rect)
 	{
 		this->progressTextureRect = rect;
 		this->needsProgressUpdate = true;
