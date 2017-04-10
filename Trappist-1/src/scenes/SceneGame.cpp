@@ -109,7 +109,7 @@ void SceneGame::update()
 
 void SceneGame::renderLights(LightRenderer2D &lightRenderer2d)
 {
-	lightRenderer2d.setDefaultLightColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	lightRenderer2d.setDefaultLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	lightRenderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
 
@@ -268,18 +268,19 @@ void SceneGame::playerMovement()
 
 		glm::vec2 dir;
 		if (Input::getKeyPressed(sf::Keyboard::W))
-			dir.y = -1.0f;
-		else if (Input::getKeyPressed(sf::Keyboard::S))
-			dir.y = 1.0f;
+			dir.y -= 1.0f;
+
+		if (Input::getKeyPressed(sf::Keyboard::S))
+			dir.y += 1.0f;
 
 		if (Input::getKeyPressed(sf::Keyboard::A))
-			dir.x = -1.0f;
-		else if (Input::getKeyPressed(sf::Keyboard::D))
-			dir.x = 1.0f;
+			dir.x -= 1.0f;
+		
+		if (Input::getKeyPressed(sf::Keyboard::D))
+			dir.x += 1.0f;
 
 		if (dir.x == 0.0f && dir.y == 0.0f)
 		{
-			if(movement->velocity.x != 0 || movement->velocity.y != 0)
 				movement->desireStop();
 		}
 		else

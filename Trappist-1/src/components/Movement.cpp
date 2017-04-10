@@ -90,17 +90,20 @@ void Movement::desireStop()
 {
 	stop = true;
 
-	if (entity->hasComponent(ComponentType::ANIMATOR))
+	if (glm::length(velocity) > 0)
 	{
-		if (desiredDirection.x > 0.0f)
-			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleRight");
-		else if (desiredDirection.x < 0.0f)
-			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleLeft");
+		if (entity->hasComponent(ComponentType::ANIMATOR))
+		{
+			if (desiredDirection.x > 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleRight");
+			else if (desiredDirection.x < 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleLeft");
 
-		bool walkY = true;
-		if (desiredDirection.y > 0.0f)
-			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleFront");
-		else if (desiredDirection.y < 0.0f)
-			static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleBack");
+			bool walkY = true;
+			if (desiredDirection.y > 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleFront");
+			else if (desiredDirection.y < 0.0f)
+				static_cast<Animator *>(entity->getComponent(ComponentType::ANIMATOR))->setAnimationByName("IdleBack");
+		}
 	}
 }
