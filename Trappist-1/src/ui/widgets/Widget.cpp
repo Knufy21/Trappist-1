@@ -13,7 +13,7 @@
 namespace ui
 {
 	Widget::Widget()
-		: parent(WIDGET_DEFAULT_PARENT), texture(WIDGET_DEFAULT_TEXTURE), boolArray(WIDGET_DEFAULT_BOOL_ARRAY_VALUE), child(WIDGET_DEFAULT_CHILD)
+		: parent(WIDGET_DEFAULT_PARENT), texture(WIDGET_DEFAULT_TEXTURE), boolArray(WIDGET_DEFAULT_BOOL_ARRAY_VALUE), child(WIDGET_DEFAULT_CHILD), depthValue(0.0f)
 	{
 		vertices = new VertexPCT2D[4];
 		setColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -316,9 +316,9 @@ namespace ui
 	void Widget::performSubmittion(Renderer2D &renderer2d) const
 	{
 		if(this->texture && this->texture->isSplit())
-			renderer2d.submit16(vertices, texture);
+			renderer2d.submit16(vertices, texture, depthValue);
 		else
-			renderer2d.submit4(vertices, texture);
+			renderer2d.submit4(vertices, texture, depthValue);
 
 		// Control
 		if (child)

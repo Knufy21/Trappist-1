@@ -249,6 +249,9 @@
     <ClInclude Include="include\Trappist-1\util\DebugLog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Trappist-1\util\Randomf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl">
@@ -389,6 +392,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Randomf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

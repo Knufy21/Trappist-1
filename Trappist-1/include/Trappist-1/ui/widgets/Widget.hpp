@@ -77,6 +77,12 @@ namespace ui
 		// Returns the global bounds of the widget, which have all transformations applied.
 		FloatRect getGlobalBounds() const;
 
+		// Returns the depth value of the widget.
+		float getDepthValue() const;
+
+		// Sets the depth value of the widget to the speicified depthValue.
+		void setDepthValue(float depthValue);
+
 		// Returns the visibility of the widget.
 		bool isVisible() const;
 
@@ -196,6 +202,9 @@ namespace ui
 		// The parent of the widget.
 		const Widget *parent;
 
+		// The depth value of the widget (how far back or in the front should it be rendered)
+		float depthValue;
+
 		// CONTROL
 
 		// The only one child of the control.
@@ -228,6 +237,16 @@ namespace ui
 	inline const glm::vec4 &Widget::getColor() const
 	{
 		return vertices[0].color;
+	}
+
+	inline float Widget::getDepthValue() const
+	{
+		return this->depthValue;
+	}
+
+	inline void Widget::setDepthValue(float depthValue)
+	{
+		this->depthValue = depthValue;
 	}
 
 	// CONTROL

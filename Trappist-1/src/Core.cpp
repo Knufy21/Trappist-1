@@ -38,7 +38,7 @@ Core::Core()
 	createWindow();
 
 	TexturePacker::packDirectory("res/textures/tiles", "res/textures/tiles", 128, 128);
-	TexturePacker::packDirectory("res/textures/system", "res/textures/system", 300, 700);
+	TexturePacker::packDirectory("res/textures/system", "res/textures/system", 300, 300);
 	TexturePacker::packDirectory("res/textures/entities/shadow-slime", "res/textures/entities/shadow-slime", 128, 128);
 	TexturePacker::packDirectory("res/textures/entities/player", "res/textures/entities/player-test", 128, 128);
 	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
@@ -169,6 +169,7 @@ void Core::createWindow()
 	windowSize.y = 480;
 	window = new sf::Window(sf::VideoMode(windowSize.x, windowSize.y), "Trappist-1", 7u, sf::ContextSettings(8));
 	//window->setFramerateLimit(60);
+	Input::setWindow(window);
 	window->setVerticalSyncEnabled(true);
 	window->setActive();
 }

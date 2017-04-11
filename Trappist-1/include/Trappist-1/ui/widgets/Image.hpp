@@ -5,16 +5,4 @@
 namespace ui
 {
 	using Image = Widget;
-	//class Image : public Widget
-	//{
-	//	using BASE = Widget;
-	//public:
-	//	Image();
-	//
-	//	virtual ~Image();
-	//
-	//protected:
-	//
-	//private:
-	//};
 }

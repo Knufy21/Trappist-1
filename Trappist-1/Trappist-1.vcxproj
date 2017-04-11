@@ -93,6 +93,7 @@
     <ClInclude Include="include\Trappist-1\util\DebugLog.hpp" />
     <ClInclude Include="include\Trappist-1\Util\EightBoolArray.hpp" />
     <ClInclude Include="include\Trappist-1\Util\Input.hpp" />
+    <ClInclude Include="include\Trappist-1\util\Randomf.hpp" />
     <ClInclude Include="include\Trappist-1\Util\TexturePacker.hpp" />
     <ClInclude Include="include\Trappist-1\Util\Time.hpp" />
     <ClInclude Include="include\Trappist-1\Util\Timer.hpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="src\ui\widgets\View.cpp" />
     <ClCompile Include="src\ui\widgets\Widget.cpp" />
     <ClCompile Include="src\Util\Input.cpp" />
+    <ClCompile Include="src\util\Randomf.cpp" />
     <ClCompile Include="src\Util\TexturePacker.cpp" />
     <ClCompile Include="src\Util\Time.cpp" />
     <ClCompile Include="src\World.cpp" />
