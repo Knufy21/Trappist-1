@@ -14,7 +14,7 @@ public:
 	virtual ~Entity();
 
 	// Updates all the Components of the Entity.
-	void update();
+	virtual void update();
 
 	// Renedrs the Entity if it has a Sprite.
 	void render(Renderer2D &renderer2d);
@@ -52,6 +52,12 @@ public:
 	// Sets the texture rect of the entity  with the values ranging from 0.0f to 1.0f.
 	void setTextureRect(float left, float top, float width, float height);
 
+	// Returns the direction the entity is looking in.
+	const glm::vec2 &getLookDirection() const;
+
+	// Sets the direction the entity is looking in.
+	void setLookDirection(const glm::vec2 &direction);
+
 	// Adds a component to the Entity or overrides the old component od this type.
 	void addComponent(Component *component);
 
@@ -65,7 +71,7 @@ public:
 	Component* getComponent(ComponentType cType);
 
 	// Tries to move the entity by the given vec2 and returns whether it was successful.
-	bool move(glm::vec2 &movement);
+	bool move(const glm::vec2 &movement);
 
 	// Gets called when the entitys health reaches 0.
 	void onDeath() {}
@@ -82,6 +88,7 @@ private:
 	VertexPCT2D vertices[4];
 
 	const Texture *texture;
+	glm::vec2 lookDirection;
 };
 
 // Inline
@@ -94,6 +101,11 @@ inline const glm::vec4 &Entity::getColor() const
 inline const glm::vec2 &Entity::getSize() const
 {
 	return this->vertices[2].position;
+}
+
+inline const glm::vec2& Entity::getLookDirection() const
+{
+	return this->lookDirection;
 }
 
 inline const Texture *Entity::getTexture() const
@@ -110,3 +122,4 @@ inline bool Entity::isDead() const
 {
 	return dead;
 }
+

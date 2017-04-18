@@ -6,16 +6,27 @@ namespace Input
 	const sf::Window *window;
 
 	std::vector<bool> keysPressedLast(sf::Keyboard::KeyCount);
+	std::vector<bool> keysPressedNow(sf::Keyboard::KeyCount);
 	std::vector<bool> buttonsPressedLast(sf::Mouse::ButtonCount);
+	std::vector<bool> buttonsPressedNow(sf::Mouse::ButtonCount);
+
+	void cleanUp()
+	{
+		keysPressedLast = keysPressedNow;
+		buttonsPressedLast = buttonsPressedNow;
+	}
 
 	void updateKey(sf::Keyboard::Key key, bool pressed)
 	{
-		keysPressedLast[key] = pressed;
+		if (key != sf::Keyboard::Key::Unknown)
+		{
+			keysPressedNow[key] = pressed;
+		}
 	}
 
 	void updateButton(sf::Mouse::Button button, bool pressed)
 	{
-		buttonsPressedLast[button] = pressed;
+		buttonsPressedNow[button] = pressed;
 	}
 
 	void setWindow(const sf::Window *window)

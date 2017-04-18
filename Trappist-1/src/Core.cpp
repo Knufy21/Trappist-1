@@ -90,7 +90,8 @@ void Core::run()
 	{
 		Time::deltaTime = deltaTimer.elapsedSeconds();
 		deltaTimer.reset();
-		
+		Input::cleanUp();
+
 		while (window->pollEvent(event))
 		{
 			switch (event.type)
@@ -152,7 +153,7 @@ void Core::run()
 		if (secondTimer.elapsedSeconds() >= 1.0f)
 		{
 			secondTimer.reset();
-			std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
+			//std::cout << "FPS: " << countedFPS << ", deltaTime: " << Time::deltaTime << "\n";
 			countedFPS = 0;
 		}
 	}

@@ -24,8 +24,8 @@ private:
 	// Checks for important input like menu calls etc. May influence paused.
 	void inputUpdate();
 
-	// Checks for WASD input and moves the player.
-	void playerMovement();
+	// Checks for WASD and ability input, moves the player and casts abilities.
+	void playerInput();
 
 	Player *player;
 	Texture texPlayer;

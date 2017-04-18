@@ -10,6 +10,7 @@ Entity::Entity()
 {
 	setTextureRect(0.0f, 0.0f, 1.0f, 1.0f);
 	setColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	setLookDirection(glm::vec2(0, 1));
 }
 
 Entity::~Entity()
@@ -56,6 +57,11 @@ void Entity::setTexture(const Texture *texture)
 	this->texture = texture;
 }
 
+void Entity::setLookDirection(const glm::vec2 &direction)
+{
+	lookDirection = direction;
+}
+
 void Entity::setTextureRect(const FloatRect &textureRect)
 {
 	vertices[0].texCoord.x = textureRect.left;
@@ -96,7 +102,7 @@ void Entity::setSize(const glm::vec2 &size)
 	vertices[2].position.y = size.y;
 }
 
-bool Entity::move(glm::vec2 &movement)
+bool Entity::move(const glm::vec2 &movement)
 {
 	bool f = true;
 

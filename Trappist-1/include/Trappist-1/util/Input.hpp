@@ -9,6 +9,9 @@ namespace Input
 {
 	void setWindow(const sf::Window *window);
 
+	// Copies the buttons pressed now to the bottons pressed last and resets the buttons pressed now. Duh'
+	void cleanUp();
+
 	// Updates the value in keysPressedLast.
 	void updateKey(sf::Keyboard::Key key, bool pressed);
 

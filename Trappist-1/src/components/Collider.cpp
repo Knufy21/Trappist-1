@@ -23,12 +23,12 @@ void Collider::update()
 	position = entity->getPosition();
 }
 
-void Collider::onMove(glm::vec2 &movement)
+void Collider::onMove(const glm::vec2 &movement)
 {
 	position = entity->getPosition();
 }
 
-bool Collider::canMove(glm::vec2 &movement)
+bool Collider::canMove(const glm::vec2 &movement)
 {
 	bool f = true;
 

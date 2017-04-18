@@ -13,6 +13,7 @@
 #include <Trappist-1\Components.hpp>
 
 #include <Trappist-1\animation\AnimationSheetManager.hpp>
+#include <Trappist-1\abilities\AbilityManager.h>
 
 SceneGame::SceneGame()
 	: lightEdges(150.0f, 200.0f), lightFactor(60.0f), lightUp(false)
@@ -49,7 +50,10 @@ SceneGame::SceneGame()
 	World::addEntity(e4);
 
 	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/player-test.asi");
-	player = new Player;
+	AbilityManager *manager = new AbilityManager();
+	manager->setAbility(0, AbilityType::DASH);
+	player = new Player(manager);
+	manager->setEntity(player);
 	player->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 1));
 	//player->setTexture(&testTexture);
 	player->setTexture(AnimationSheetManager::get(AnimationSheetManager::AnimationSheetHandles::PLAYER)->getTexture());
@@ -102,7 +106,7 @@ void SceneGame::update()
 
 	if (!paused)
 	{
-		playerMovement();
+		playerInput();
 		World::update();
 	}
 }
@@ -196,7 +200,7 @@ void SceneGame::onSizeChanged(unsigned int width, unsigned int height)
 	World::camera.setOrigin(static_cast<float>(width) * 0.5f, static_cast<float>(height) * 0.5f);
 }
 
-void SceneGame::playerMovement()
+void SceneGame::playerInput()
 {
 	/*static constexpr float speed = 300.0f;
 	if (Input::getKeyPressed(sf::Keyboard::A))
@@ -286,6 +290,14 @@ void SceneGame::playerMovement()
 		else
 			movement->setDesiredDirection(dir);
 
+	}
+
+	for (size_t i = 0; i < player->abilityManager->getSize() && i < 9; i++)
+	{
+		if (Input::getKeyDown(sf::Keyboard::Key(27 + i)))
+		{
+			player->abilityManager->cast(i);
+		}
 	}
 
 	World::camera.setPosition(glm::clamp(player->getPosition().x, World::getLeftBorder(static_cast<float>(Core::windowSize.x)), World::getRightBorder(static_cast<float>(Core::windowSize.x))),

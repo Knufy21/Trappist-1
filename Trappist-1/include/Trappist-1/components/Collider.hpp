@@ -15,8 +15,8 @@ public:
 	Collider(Entity *entity, glm::vec2 &size);
 
 	void update() override;
-	void onMove(glm::vec2 &movement) override;
-	bool canMove(glm::vec2 &movement) override;
+	void onMove(const glm::vec2 &movement) override;
+	bool canMove(const glm::vec2 &movement) override;
 
 	// Returns the position of the collider.
 	glm::vec2 getPosition() const;
