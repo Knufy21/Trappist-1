@@ -4,8 +4,8 @@
 
 namespace ui
 {
-	Action::Action(float duration, const Interpolation &interpolation)
-		: duration(duration), interpolation(interpolation), currTime(0.0f), finished(false)
+	Action::Action(float duration, const Interpolation &interpolation, std::function<void()> onFinish)
+		: duration(duration), interpolation(interpolation), onFinish(onFinish), currTime(0.0f), finished(false)
 	{  }
 
 	Action::~Action()

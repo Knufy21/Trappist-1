@@ -12,7 +12,10 @@ namespace ui
 		enum Type { ALPHA_TO, ALPHA_BY, ROTATE_TO, ROTATE_BY };
 
 		// Erstellt eine 'FloatAction'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
-		FloatAction(Type type, T value, float duration, const Interpolation &interpolation = Interpolation::linear);
+		FloatAction(Type type, T value, float duration, const Interpolation &interpolation = Interpolation::linear, std::function<void()> onFinish = nullptr);
+
+		// Erstellt eine 'FloatAction'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
+		FloatAction(Type type, T value, float duration, std::function<void()> onFinish, const Interpolation &interpolation = Interpolation::linear);
 
 		// Destruktor
 		~FloatAction();

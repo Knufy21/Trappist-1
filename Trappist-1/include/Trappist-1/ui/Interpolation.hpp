@@ -1,7 +1,5 @@
 #pragma once
 
-#include <functional>
-
 namespace ui
 {
 	class Interpolation
@@ -12,10 +10,19 @@ namespace ui
 		static Interpolation swingOut;
 		static Interpolation swing;
 
-		Interpolation(const std::function<float(float)> &getFunction);
+		Interpolation(float(*getFunction)(float));
+
+		// Returns the interpolated value of the specified value.
 		float get(float value) const;
 
 	private:
-		std::function<float(float)> getFunction;
+		float(*getFunction)(float);
 	};
+
+	// Inline
+
+	inline float Interpolation::get(float value) const
+	{
+		return getFunction(value);
+	}
 }

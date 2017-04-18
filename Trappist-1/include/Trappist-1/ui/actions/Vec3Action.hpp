@@ -12,7 +12,10 @@ namespace ui
 		enum Type : unsigned char { RGB_TO, RGB_BY };
 
 		// Erstellt eine 'Vec3Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
-		Vec3Action(Type type, const T &value, float duration, const Interpolation &interpolation = Interpolation::linear);
+		Vec3Action(Type type, const T &value, float duration, const Interpolation &interpolation = Interpolation::linear, std::function<void()> onFinish = nullptr);
+
+		// Erstellt eine 'Vec3Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
+		Vec3Action(Type type, const T &value, float duration, std::function<void()> onFinish, const Interpolation &interpolation = Interpolation::linear);
 
 		// Destruktor
 		~Vec3Action();

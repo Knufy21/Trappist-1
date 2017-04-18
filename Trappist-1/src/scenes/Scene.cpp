@@ -20,7 +20,7 @@ void Scene::renderLights(LightRenderer2D &lightRenderer2d)
 
 void Scene::render(Renderer2D &renderer2d)
 {
-	submit(renderer2d);
+
 }
 
 void Scene::onSizeChanged(unsigned int width, unsigned int height)

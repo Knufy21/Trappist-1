@@ -23,7 +23,7 @@ public:
 	virtual void render(Renderer2D &renderer2d);
 
 	// Event being called when the size of the window has been changed.
-	virtual void onSizeChanged(unsigned int width, unsigned int height);
+	virtual void onSizeChanged(unsigned int width, unsigned int height) override;
 
 	// Returns what kind of scene it is.
 	Scene::Type getSceneType() const;

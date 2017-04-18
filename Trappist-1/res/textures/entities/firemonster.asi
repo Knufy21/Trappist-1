@@ -1,0 +1,10 @@
+firemonster.png
+32x32
+IdleFront:2-3-0.5-0-0-0-0
+IdleBack:0-1-0.5-0-0-0-0
+IdleRight:4-5-0.5-0-0-0-0
+IdleLeft:4-5-0.5-1-0-0-0
+MoveFront:9-11-0.1-0-0-0-0
+MoveBack:6-8-0.1-0-0-0-0
+MoveRight:12-14-0.1-0-0-0-0
+MoveLeft:12-14-0.1-1-0-0-0

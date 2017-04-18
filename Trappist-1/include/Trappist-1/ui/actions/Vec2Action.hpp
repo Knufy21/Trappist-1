@@ -12,7 +12,10 @@ namespace ui
 		enum Type : unsigned char { MOVE_TO, MOVE_BY, SIZE_TO, SIZE_BY, SCALE_TO, SCALE_BY };
 
 		// Erstellt eine 'Vec2Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
-		Vec2Action(Type type, const T &value, float duration, const Interpolation &interpolation = Interpolation::linear);
+		Vec2Action(Type type, const T &value, float duration, const Interpolation &interpolation = Interpolation::linear, std::function<void()> onFinish = nullptr);
+
+		// Erstellt eine 'Vec2Action'-Instanz, wobei der Wert(value) in der Zeit(duration) in Sekunden mit der Interpolation(interpolation) durch den Typ(type) auf das Zielobjekt übertragen wird.
+		Vec2Action(Type type, const T &value, float duration, std::function<void()> onFinish, const Interpolation &interpolation = Interpolation::linear);
 
 		// Destruktor
 		~Vec2Action();

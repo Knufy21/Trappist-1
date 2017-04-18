@@ -5,8 +5,12 @@
 
 namespace ui
 {
-	Vec4Action::Vec4Action(Type type, const T &value, float duration, const Interpolation &interpolation)
-		: Action(duration, interpolation), type(type), inputValue(value)
+	Vec4Action::Vec4Action(Type type, const T &value, float duration, const Interpolation &interpolation, std::function<void()> onFinish)
+		: Action(duration, interpolation, onFinish), type(type), inputValue(value)
+	{  }
+
+	Vec4Action::Vec4Action(Type type, const T &value, float duration, std::function<void()> onFinish, const Interpolation &interpolation)
+		: Action(duration, interpolation, onFinish), type(type), inputValue(value)
 	{  }
 
 	Vec4Action::~Vec4Action() {  }

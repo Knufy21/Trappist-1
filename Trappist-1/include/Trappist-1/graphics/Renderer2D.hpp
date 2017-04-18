@@ -150,11 +150,11 @@ private:
 	VertexBuffer *fontVertexBuffer;
 	ELEMENT_INDEX_GL_TYPE *fontIndexBuffer;
 
-	unsigned int vertexCount;
-	unsigned int indexCount;
+	std::size_t vertexCount;
+	std::size_t indexCount;
 
-	unsigned int fontVertexCount;
-	unsigned int fontIndexCount;
+	std::size_t fontVertexCount;
+	std::size_t fontIndexCount;
 
 	GLubyte activeTextureSlotCount;
 	GLuint textureSlots[Renderer2D::TEXTURE_SLOT_COUNT];

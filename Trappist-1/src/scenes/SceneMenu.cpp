@@ -15,7 +15,7 @@ constexpr float labelFadeInTime = 0.05f;
 constexpr float labelFadeOutTime = 0.05f;
 
 SceneMenu::SceneMenu()
-	: focusedPlanet(SceneMenu::IMG_PLANETS_SIZE), state(SceneMenu::State::STANDARD), planetBoolsLocked(0b0000'0001) // last, ..., second, first
+	: focusedPlanet(SceneMenu::IMG_PLANETS_SIZE), state(SceneMenu::State::STANDARD), planetBoolsLocked(0b0000'0000) // last, ..., second, first
 {
 	type = (Scene::Type::MENU);
 
@@ -72,7 +72,7 @@ SceneMenu::SceneMenu()
 	for (std::size_t i = 0; i < SceneMenu::IMG_PLANETS_SIZE; ++i)
 	{
 		imgPlanets[i].setEventReceiver(true);
-		if(planetBoolsLocked.get(i))
+		if(planetBoolsLocked.get(static_cast<EightBoolArray::value_t>(i)))
 			imgPlanets[i].setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord(SceneMenu::STR_PLANET_NAMES[SceneMenu::IMG_PLANETS_SIZE]));
 		else
 			imgPlanets[i].setTextureRect(TextureManager::get(TextureManager::TextureHandles::TRAPPIST_1_SYSTEM_ATLAS)->getTexCoord(SceneMenu::STR_PLANET_NAMES[i]));
@@ -86,7 +86,7 @@ SceneMenu::SceneMenu()
 				{
 					this->imgPlanets[i].addAction(ui::Vec2Action(ui::Vec2Action::Type::SCALE_TO, glm::vec2(1.1f, 1.1f), buttonHightlightTime));
 
-					if (planetBoolsLocked.get(i))
+					if (planetBoolsLocked.get(static_cast<EightBoolArray::value_t>(i)))
 						this->lbls[SceneMenu::LBL_PLANET_INFO].setText(SceneMenu::STR_PLANET_INFO[SceneMenu::IMG_PLANETS_SIZE]);
 					else
 						this->lbls[SceneMenu::LBL_PLANET_INFO].setText(SceneMenu::STR_PLANET_INFO[i]);
@@ -131,6 +131,9 @@ SceneMenu::SceneMenu()
 	playerRoatationVelocity = 0.2f;
 
 	/* buttons */
+
+	TextureManager::load(TextureManager::TextureHandles::UI_ATLAS, "res/textures/ui");
+	TextureManager::get(TextureManager::TextureHandles::UI_ATLAS)->setSmooth(false);
 	
 	#define buttonColorDefault glm::vec4(0.18f, 0.18f, 0.18f, 1.0f)
 	#define buttonColorHighlighted glm::vec4(0.3f, 0.3f, 0.3f, 1.0f)
@@ -147,6 +150,7 @@ SceneMenu::SceneMenu()
 		btns[i].setTextAlignment(ui::Label::Alignment::CENTER);
 		btns[i].setDepthValue(-0.9f);
 		btns[i].setColor(buttonColorDefault);
+		//btns[i].setTexture(TextureManager::get(TextureManager::TextureHandles::UI_ATLAS)->getTexture());
 		//btns[i].setAutoSizeMode(ui::Label::AutoSizeMode::Y);
 		btns[i].setText(SceneMenu::STR_BUTTON_NAMES[i]);
 		btns[i].addListener(ui::MouseButtonListener([this, i](const void *args)
@@ -225,6 +229,8 @@ void SceneMenu::update()
 		{
 			playerVelocity += glm::normalize(glm::vec2(Input::getMousePos()) - imgPlayer.getPosition()) * 20.0f;
 		}
+		if(glm::length(playerVelocity) > 10.0f)
+			playerVelocity -= glm::normalize(playerVelocity);
 
 		// distance to sun
 		setImgPlayerColorByPosition(imgPlayer.getPosition());
@@ -253,6 +259,33 @@ void SceneMenu::setImgPlayerColorByPosition(const glm::vec2 &position)
 void SceneMenu::render(Renderer2D &renderer2d)
 {
 	BASE::render(renderer2d);
+
+	// Submit trappist-1a and planets
+	imgTrappist1a.submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_B].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_C].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_D].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_E].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_F].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_G].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_H].submit(renderer2d);
+	imgPlanets[SceneMenu::IMG_PLANETS_TRAPPIST_1_R].submit(renderer2d);
+
+	// Submit player
+	imgPlayer.submit(renderer2d);
+
+	// Submit buttons
+	btns[SceneMenu::BTN_QUIT].submit(renderer2d);
+	btns[SceneMenu::BTN_CREDITS].submit(renderer2d);
+	btns[SceneMenu::BTN_OPTIONS].submit(renderer2d);
+	btns[SceneMenu::BTN_MULTIPLAYER].submit(renderer2d);
+	btns[SceneMenu::BTN_SINGLEPLAYER].submit(renderer2d);
+
+	// Submit labels
+	lbls[SceneMenu::LBL_TITLE].submit(renderer2d);
+	lbls[SceneMenu::LBL_MAIN_INFO].submit(renderer2d);
+	lbls[SceneMenu::LBL_PLANET_INFO].submit(renderer2d);
+	lbls[SceneMenu::LBL_PLANET_PLAY_INFO].submit(renderer2d);
 }
 
 void SceneMenu::focusPlanet(std::size_t index)
@@ -266,7 +299,10 @@ void SceneMenu::focusPlanet(std::size_t index)
 
 	if (isAnyPlanetFocused()) // if focus planet call is valid (-> make planet focused)
 	{
-		setState(SceneMenu::State::PLANET_INFO);
+		scheduleEvent(duration, [this]()
+		{
+		});
+		this->setState(SceneMenu::State::PLANET_INFO);
 
 		imgPlanets[index].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planet_focused_x(), planet_focused_y()), duration));
 		imgPlanets[index].addAction(ui::Vec2Action(ui::Vec2Action::SCALE_TO, glm::vec2(4.0f, 4.0f), duration));
@@ -274,12 +310,12 @@ void SceneMenu::focusPlanet(std::size_t index)
 		hidePlanets(index, index + 1, duration);
 
 		lbls[LBL_PLANET_INFO].setText("");
-		if (planetBoolsLocked.get(index))
+		if (planetBoolsLocked.get(static_cast<EightBoolArray::value_t>(index)))
 			lbls[LBL_PLANET_PLAY_INFO].setText(SceneMenu::STR_PLANET_INFO[SceneMenu::IMG_PLANETS_SIZE]);
 		else
 			lbls[LBL_PLANET_PLAY_INFO].setText(SceneMenu::STR_PLANET_INFO[index]);
 
-		if(!planetBoolsLocked.get(index))
+		if(!planetBoolsLocked.get(static_cast<EightBoolArray::value_t>(index)))
 			showPlayButtons(duration);
 		hideStandardButtons(duration);
 
@@ -291,7 +327,10 @@ void SceneMenu::focusPlanet(std::size_t index)
 	}
 	else // if focus planet call is invalid (-> make planet unfocused)
 	{
-		setState(SceneMenu::State::STANDARD);
+		scheduleEvent(duration, [this]()
+		{
+		});
+		this->setState(SceneMenu::State::STANDARD);
 
 		imgPlanets[lastFocusedPlanet].addAction(ui::Vec2Action(ui::Vec2Action::MOVE_TO, glm::vec2(planetXPositions[lastFocusedPlanet], planet_y()), duration));
 		imgPlanets[lastFocusedPlanet].addAction(ui::Vec2Action(ui::Vec2Action::SCALE_TO, glm::vec2(1.0f, 1.0f), duration));
@@ -317,12 +356,15 @@ void SceneMenu::showCredits()
 	if (isAnyPlanetFocused() || getState() == SceneMenu::State::CREDITS)
 		return;
 
-	setState(SceneMenu::State::CREDITS);
-
-	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CREDITS);
-
 	constexpr float duration = 0.6f;
 	constexpr std::size_t planetSplitIndex = 3;
+
+	scheduleEvent(duration, [this]()
+	{
+	});
+	this->setState(SceneMenu::State::CREDITS);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CREDITS);
 
 	hidePlanets(planetSplitIndex, planetSplitIndex, duration);
 	hideStandardButtons(duration);
@@ -333,12 +375,15 @@ void SceneMenu::hideCredits()
 	if (getState() != SceneMenu::State::CREDITS)
 		return;
 
-	setState(SceneMenu::State::STANDARD);
-
-	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
-
 	constexpr float duration = 0.6f;
 	constexpr std::size_t planetSplitIndex = 3;
+
+	scheduleEvent(duration, [this]()
+	{
+	});
+	this->setState(SceneMenu::State::STANDARD);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
 
 	showPlanets(planetSplitIndex, planetSplitIndex, duration);
 	showStandardButtons(duration);
@@ -349,12 +394,15 @@ void SceneMenu::showOptions()
 	if (isAnyPlanetFocused() || getState() == SceneMenu::State::OPTIONS)
 		return;
 
-	setState(SceneMenu::State::OPTIONS);
-
-	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_BUTTON_NAMES[SceneMenu::BTN_OPTIONS]);
-
 	constexpr float duration = 0.6f;
 	constexpr std::size_t planetSplitIndex = 3;
+
+	scheduleEvent(duration, [this]()
+	{
+	});
+	this->setState(SceneMenu::State::OPTIONS);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_BUTTON_NAMES[SceneMenu::BTN_OPTIONS]);
 
 	hidePlanets(planetSplitIndex, planetSplitIndex, duration);
 	hideStandardButtons(duration);
@@ -365,12 +413,15 @@ void SceneMenu::hideOptions()
 	if (getState() != SceneMenu::State::OPTIONS)
 		return;
 
-	setState(SceneMenu::State::STANDARD);
-
-	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
-
 	constexpr float duration = 0.6f;
 	constexpr std::size_t planetSplitIndex = 3;
+
+	scheduleEvent(duration, [this]()
+	{
+	});
+	this->setState(SceneMenu::State::STANDARD);
+
+	lbls[SceneMenu::LBL_MAIN_INFO].setText(SceneMenu::STR_CHOOSE_INFO);
 
 	showPlanets(planetSplitIndex, planetSplitIndex, duration);
 	showStandardButtons(duration);

@@ -26,9 +26,9 @@ void main()
 	if(color.a == 0.0f)
 		discard;
 
-	if(useLightMap > 0)
-	{
+if(useLightMap > 0)
+{
 		vec2 lightMapCoord = (fragPosition + 1.0f) * 0.5f;
-		color *= texture(lightMap, lightMapCoord);
-	}
+		color = color * texture(lightMap, lightMapCoord);
+}
 }

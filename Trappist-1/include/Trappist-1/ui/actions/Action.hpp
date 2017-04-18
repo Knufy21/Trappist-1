@@ -13,7 +13,7 @@ namespace ui
 	{
 	public:
 		// Erstellt eine 'Action'-Instanz, mit der Zeit(duration) in Sekunden und der Interpolation(interpolation).
-		Action(float duration, const Interpolation &interpolation);
+		Action(float duration, const Interpolation &interpolation, std::function<void()> onFinish);
 
 		// Virtueller Destruktor.
 		virtual ~Action();

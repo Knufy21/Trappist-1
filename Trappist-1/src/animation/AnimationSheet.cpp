@@ -21,9 +21,9 @@ bool AnimationSheet::load(TextureManager::TextureHandle handle, const std::strin
 	TextureManager::get(handle)->setSmooth(false);
 
 	std::getline(file, line, 'x');
-	frameSize.x = std::stof(line);
+	frameSize.x = std::stoi(line);
 	std::getline(file, line);
-	frameSize.y = std::stof(line);
+	frameSize.y = std::stoi(line);
 	
 	unsigned int lineNum;
 	for (lineNum = 0; std::getline(file, line); ++lineNum)
@@ -111,9 +111,11 @@ FloatRect AnimationSheet::getTextureRectByState(Animation::state_t state) const
 {
 	float x, y;
 	Animation::state_t verticalSpriteCount;
-	verticalSpriteCount = getTexture()->getSize().x / frameSize.x;
-	x = static_cast<float>(state % verticalSpriteCount) * frameSize.x;
-	y = static_cast<float>(state / verticalSpriteCount) * frameSize.y;
-	return FloatRect(x / getTexture()->getSize().x, y / getTexture()->getSize().y,
-		frameSize.x / getTexture()->getSize().x, frameSize.y / getTexture()->getSize().y);
+	verticalSpriteCount = static_cast<unsigned short>(getTexture()->getSize().x / frameSize.x);
+	x = static_cast<float>(state % verticalSpriteCount) * static_cast<float>(frameSize.x);
+	y = static_cast<float>(state / verticalSpriteCount) * static_cast<float>(frameSize.y);
+	return FloatRect(x / static_cast<float>(getTexture()->getSize().x),
+		y / static_cast<float>(getTexture()->getSize().y),
+		static_cast<float>(frameSize.x) / static_cast<float>(getTexture()->getSize().x),
+		static_cast<float>(frameSize.y) / static_cast<float>(getTexture()->getSize().y));
 }

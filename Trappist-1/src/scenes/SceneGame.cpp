@@ -37,7 +37,7 @@ SceneGame::SceneGame()
 		}
 	}
 
-	Entity *e4 = new Entity;
+	e4 = new Entity;
 	e4->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 2));
 	e4->setPosition(100.0f, 300.0f);
 	e4->setOrigin(glm::vec2(e4->getSize().x * 0.5f, e4->getSize().y * 0.75f));
@@ -49,11 +49,16 @@ SceneGame::SceneGame()
 	static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->maxSpeed = 0.2f;
 	World::addEntity(e4);
 
+<<<<<<< Updated upstream
 	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/player-test.asi");
 	AbilityManager *manager = new AbilityManager();
 	manager->setAbility(0, AbilityType::DASH);
 	player = new Player(manager);
 	manager->setEntity(player);
+=======
+	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/firemonster.asi");
+	player = new Player;
+>>>>>>> Stashed changes
 	player->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 1));
 	//player->setTexture(&testTexture);
 	player->setTexture(AnimationSheetManager::get(AnimationSheetManager::AnimationSheetHandles::PLAYER)->getTexture());
@@ -113,7 +118,7 @@ void SceneGame::update()
 
 void SceneGame::renderLights(LightRenderer2D &lightRenderer2d)
 {
-	lightRenderer2d.setDefaultLightColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	lightRenderer2d.setDefaultLightColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	lightRenderer2d.pushMatrix(glm::inverse(World::camera.getTransform()));
 
@@ -121,9 +126,13 @@ void SceneGame::renderLights(LightRenderer2D &lightRenderer2d)
 	lightRenderer2d.submitLight2D(player->getPosition(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec2(50.0f, 200.0f));
 
 	// ground light
-	lightRenderer2d.submitLight2D(glm::vec2(0.0f, -50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), lightEdges);
-	lightRenderer2d.submitLight2D(glm::vec2(-50.0f, 50.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), lightEdges);
-	lightRenderer2d.submitLight2D(glm::vec2(50.0f, 50.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), lightEdges);
+	//lightRenderer2d.submitLight2D(glm::vec2(0.0f, -50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), lightEdges);
+	//lightRenderer2d.submitLight2D(glm::vec2(-50.0f, 50.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), lightEdges);
+	//lightRenderer2d.submitLight2D(glm::vec2(50.0f, 50.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), lightEdges);
+
+	lightRenderer2d.submitLight2D(e4->getPosition() + glm::vec2(0.0f, -50.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), lightEdges);
+	lightRenderer2d.submitLight2D(e4->getPosition() + glm::vec2(-50.0f, 50.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), lightEdges);
+	lightRenderer2d.submitLight2D(e4->getPosition() + glm::vec2(50.0f, 50.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), lightEdges);
 
 	lightRenderer2d.popMatrix();
 }

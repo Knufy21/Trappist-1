@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <unordered_set>
+#include <list>
 #include <glm\glm.hpp>
 #include <SFML\Window\Window.hpp>
 #include <SFML\Window\Event.hpp>
@@ -16,9 +17,6 @@ namespace ui
 		Screen();
 		virtual ~Screen();
 
-		// Submits all widgets to the specified renderer.
-		void submit(Renderer2D &renderer2d);
-
 		// Updates all widgets with the speicifed deltaTime.
 		void update(float deltaTime);
 
@@ -31,15 +29,14 @@ namespace ui
 		// Removes the specified widget to the screen.
 		void removeWidget(Widget *widget);
 
-		// Sets the function which will be called after the screen's size changed.
-		void setSizeChangedFun(std::function<void(unsigned int, unsigned int)> sizeChangedFun);
+		// Schedules an event being called when the specified time in seconds has past.
+		void scheduleEvent(float time, std::function<void()> onEvent);
 
-	protected:
-		//virtual void onSizeChanged(unsigned int width, unsigned int height) = 0;
-
+		// Event being called when the size of the window has been changed.
+		virtual void onSizeChanged(unsigned int width, unsigned int height);
 	private:
+		std::list<std::pair<float, std::function<void()>>> scheduledEvents;
 		std::unordered_set<Widget *> widgets;
-		std::function<void(unsigned int, unsigned int)> sizeChangedFun;
 		glm::ivec2 mousePosition;
 	};
 
@@ -53,10 +50,5 @@ namespace ui
 	inline void Screen::removeWidget(Widget *widget)
 	{
 		this->widgets.erase(widget);
-	}
-
-	inline void Screen::setSizeChangedFun(std::function<void(unsigned int, unsigned int)> sizeChangedFun)
-	{
-		this->sizeChangedFun = sizeChangedFun;
 	}
 }

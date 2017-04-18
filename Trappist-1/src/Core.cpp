@@ -38,9 +38,11 @@ Core::Core()
 	createWindow();
 
 	TexturePacker::packDirectory("res/textures/tiles", "res/textures/tiles", 128, 128);
+	//TexturePacker::packDirectory("res/textures/ui", "res/textures/ui", 3, 3);
 	TexturePacker::packDirectory("res/textures/system", "res/textures/system", 300, 300);
 	TexturePacker::packDirectory("res/textures/entities/shadow-slime", "res/textures/entities/shadow-slime", 128, 128);
 	TexturePacker::packDirectory("res/textures/entities/player", "res/textures/entities/player-test", 128, 128);
+	TexturePacker::packDirectory("res/textures/entities/firemonster", "res/textures/entities/firemonster", 128, 128);
 	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
 	//font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
 	changeScene(Scene::Type::GAME);
@@ -83,7 +85,7 @@ void Core::run()
 
 	LightRenderer2D lightRenderer2d;
 	lightRenderer2d.setShader(&lightShader);
-	shader2d.setUniform1i("useLightMap", 0);
+	shader2d.setUniform1i("useLightMap", 1);
 	Timer testTimer;
 
 	while (running)
@@ -106,8 +108,8 @@ void Core::run()
 				windowSize.x = event.size.width;
 				windowSize.y = event.size.height;
 				glViewport(0, 0, event.size.width, event.size.height);
-				if (scene)
-					scene->onSizeChanged(event.size.width, event.size.height);
+				//if (scene)
+				//	scene->onSizeChanged(event.size.width, event.size.height);
 				break;
 			case sf::Event::KeyPressed:
 				Input::updateKey(event.key.code, true);

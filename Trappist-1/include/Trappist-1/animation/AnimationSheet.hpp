@@ -28,7 +28,7 @@ public:
 private:
 	TextureManager::TextureHandle textureHandle;
 	std::unordered_map<std::string, Animation> animations;
-	glm::vec2 frameSize;
+	glm::ivec2 frameSize;
 };
 
 inline const Texture *AnimationSheet::getTexture() const

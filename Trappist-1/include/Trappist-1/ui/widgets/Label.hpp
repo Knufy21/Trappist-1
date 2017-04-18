@@ -136,7 +136,7 @@ namespace ui
 		const Font *font;
 		unsigned int fontSize;
 		glm::vec2 sizeLimits;
-		mutable unsigned int lineCount;
+		mutable std::size_t lineCount;
 		bool multiLine;
 
 		float thickness;

@@ -11,16 +11,22 @@ namespace ui
 	Screen::~Screen()
 	{	}
 
-	void Screen::submit(Renderer2D &renderer2d)
-	{
-		for (auto it = this->widgets.begin(); it != this->widgets.end(); ++it)
-			(*it)->submit(renderer2d);
-	}
-
 	void Screen::update(float deltaTime)
 	{
 		for (auto it = this->widgets.begin(); it != this->widgets.end(); ++it)
 			(*it)->update(deltaTime);
+
+		for (auto it = this->scheduledEvents.begin(); it != this->scheduledEvents.end(); )
+		{
+			if ((it->first -= deltaTime) < 0.0f)
+			{
+				it->second();
+				scheduledEvents.erase(it++);
+			}
+			else
+				++it;
+		}
+			
 	}
 
 	void Screen::handle(sf::Window &window, sf::Event &event)
@@ -28,8 +34,7 @@ namespace ui
 		switch (event.type)
 		{
 		case sf::Event::Resized:
-			if(this->sizeChangedFun)
-				this->sizeChangedFun(event.size.width, event.size.height);
+			onSizeChanged(event.size.width, event.size.height);
 			break;
 		case sf::Event::MouseButtonPressed:
 			for (Widget *widget : this->widgets)
@@ -133,6 +138,16 @@ namespace ui
 				}
 			}
 			break;
-		}	
+		}
+	}
+
+	void Screen::scheduleEvent(float time, std::function<void()> onEvent)
+	{
+		scheduledEvents.push_back(std::make_pair(time, onEvent));
+	}
+
+	void Screen::onSizeChanged(unsigned int width, unsigned int height)
+	{
+
 	}
 }

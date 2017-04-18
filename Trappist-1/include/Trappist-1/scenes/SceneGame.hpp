@@ -4,6 +4,7 @@
 #include <Trappist-1\graphics\Texture.hpp>
 
 class Player;
+class Entity;
 class SceneGame : public Scene
 {
 public:
@@ -31,6 +32,7 @@ private:
 	Texture texPlayer;
 	Texture testTexture;
 	bool paused;
+	Entity *e4;
 
 	// test for lights
 	glm::vec2 lightEdges;

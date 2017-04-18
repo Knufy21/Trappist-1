@@ -110,6 +110,9 @@ public:
 	// Returns the state of the menu scene.
 	SceneMenu::State getState() const;
 
+	// Returns whether the speicified state is currently active or not.
+	bool isState(SceneMenu::State state) const;
+
 	// Hides all planets and trappist-1a in the specified duration.
 	//All planets with an index less or equal to leftSplitIndex move to the left and all planets with an index greater to rightSplitIndex move to the right.
 	void hidePlanets(std::size_t leftSplitIndex, std::size_t rightSplitIndex, float duration);
@@ -185,10 +188,10 @@ private:
 	float player_focused_y() const;
 
 	SceneMenu::State state;
-	ui::Button btns[SceneMenu::BTN_SIZE];
-	ui::Label lbls[SceneMenu::LBL_SIZE];
 	ui::Image imgTrappist1a;
 	ui::Image imgPlanets[SceneMenu::IMG_PLANETS_SIZE];
+	ui::Button btns[SceneMenu::BTN_SIZE];
+	ui::Label lbls[SceneMenu::LBL_SIZE];
 	EightBoolArray planetBoolsLocked;
 	float planetXPositions[SceneMenu::IMG_PLANETS_SIZE];
 	
@@ -224,6 +227,11 @@ inline SceneMenu::State SceneMenu::getState() const
 inline void SceneMenu::setState(SceneMenu::State state)
 {
 	this->state = state;
+}
+
+inline bool SceneMenu::isState(SceneMenu::State state) const
+{
+	return getState() == state;
 }
 
 // True inline functions
