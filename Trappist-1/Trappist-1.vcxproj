@@ -28,6 +28,7 @@
     <ClInclude Include="include\Trappist-1\Components.hpp" />
     <ClInclude Include="include\Trappist-1\components\Animator.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Collider.hpp" />
+    <ClInclude Include="include\Trappist-1\components\Combat.h" />
     <ClInclude Include="include\Trappist-1\Components\Component.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Health.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Movement.hpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="include\Trappist-1\Core.hpp" />
     <ClInclude Include="include\Trappist-1\Entities.hpp" />
     <ClInclude Include="include\Trappist-1\Entities\Entity.hpp" />
+    <ClInclude Include="include\Trappist-1\entities\EntityManager.h" />
     <ClInclude Include="include\Trappist-1\Entities\Player.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Fonts\Character.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Fonts\Font.hpp" />
@@ -118,10 +120,12 @@
     <ClCompile Include="src\CollisionDetector.cpp" />
     <ClCompile Include="src\components\Animator.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
+    <ClCompile Include="src\components\Combat.cpp" />
     <ClCompile Include="src\Components\Health.cpp" />
     <ClCompile Include="src\Components\Movement.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\Entities\Entity.cpp" />
+    <ClCompile Include="src\entities\EntityManager.cpp" />
     <ClCompile Include="src\entities\Player.cpp" />
     <ClCompile Include="src\Graphics\Fonts\Font.cpp" />
     <ClCompile Include="src\graphics\light\LightRenderer2D.cpp" />

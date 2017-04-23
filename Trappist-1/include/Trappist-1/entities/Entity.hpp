@@ -5,6 +5,11 @@
 #include <Trappist-1\graphics\Vertex2D.hpp>
 #include <Trappist-1\components\Component.hpp>
 
+enum EntityType
+{
+	ENTITYCOUNT
+};
+
 class Renderer2D;
 
 class Entity : public Transform2D

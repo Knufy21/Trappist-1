@@ -6,7 +6,7 @@
 Movement::Movement(Entity *entity) : Component(entity)
 {
 	type = ComponentType::MOVEMENT;
-	friction = 1;
+	friction = 100;
 	maxSpeed = 10;
 	stop = true;
 }

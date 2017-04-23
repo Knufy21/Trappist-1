@@ -258,6 +258,12 @@
     <ClInclude Include="include\Trappist-1\abilities\AbilityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Trappist-1\components\Combat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Trappist-1\entities\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Trappist-1\UI\Listeners\TemplateListener.inl">
@@ -410,6 +416,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\Combat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

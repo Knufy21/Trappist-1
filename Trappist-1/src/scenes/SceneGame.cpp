@@ -49,16 +49,11 @@ SceneGame::SceneGame()
 	static_cast<Movement*>(e4->getComponent(ComponentType::MOVEMENT))->maxSpeed = 0.2f;
 	World::addEntity(e4);
 
-<<<<<<< Updated upstream
 	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/player-test.asi");
 	AbilityManager *manager = new AbilityManager();
 	manager->setAbility(0, AbilityType::DASH);
 	player = new Player(manager);
 	manager->setEntity(player);
-=======
-	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::PLAYER, TextureManager::TextureHandles::ANIMATION_SHEET_PLAYER, "res/textures/entities/firemonster.asi");
-	player = new Player;
->>>>>>> Stashed changes
 	player->setSize(glm::vec2(World::TILE_PIXEL_WIDTH, World::TILE_PIXEL_HEIGHT * 1));
 	//player->setTexture(&testTexture);
 	player->setTexture(AnimationSheetManager::get(AnimationSheetManager::AnimationSheetHandles::PLAYER)->getTexture());
@@ -66,6 +61,7 @@ SceneGame::SceneGame()
 	player->addComponent(new Collider(player, World::TILE_PIXEL_WIDTH * 0.4f));
 	player->addComponent(new Movement(player));
 	player->addComponent(new Animator(player, AnimationSheetManager::AnimationSheetHandles::PLAYER));
+	player->addComponent(new Combat(player, 1, 10));
 	World::addEntity(player);
 
 	AnimationSheetManager::load(AnimationSheetManager::AnimationSheetHandles::SHADOW_SLIME, TextureManager::TextureHandles::ANIMATION_SHEET_SHADOW_SLIME, "res/textures/entities/shadow-slime.asi");

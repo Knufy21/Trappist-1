@@ -8,6 +8,7 @@ enum ComponentType
 	COLLIDER,
 	HEALTH,
 	MOVEMENT,
+	COMBAT,
 	COMPONENTCOUNT
 };
 
