@@ -44,6 +44,7 @@ Core::Core()
 	TexturePacker::packDirectory("res/textures/entities/player", "res/textures/entities/player-test", 128, 128);
 	TexturePacker::packDirectory("res/textures/entities/firemonster", "res/textures/entities/firemonster", 128, 128);
 	font.load("res/fonts/PixelArial.png", "res/fonts/PixelArial.fnt");
+	World::genColorPalette("res/Colorpalette.png");
 	//font.load("res/fonts/Arial/Arial.png", "res/fonts/Arial/Arial.fnt");
 	changeScene(Scene::Type::GAME);
 }

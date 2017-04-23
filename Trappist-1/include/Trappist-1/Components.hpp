@@ -6,4 +6,4 @@
 #include <Trappist-1\components\Collider.hpp>
 #include <Trappist-1\components\Movement.hpp>
 #include <Trappist-1\components\Script.hpp>
-#include <Trappist-1\components\Combat.h>
+#include <Trappist-1\components\Combat.hpp>

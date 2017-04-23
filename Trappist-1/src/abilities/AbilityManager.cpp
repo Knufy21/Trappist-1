@@ -1,4 +1,4 @@
-#include <Trappist-1\abilities\AbilityManager.h>
+#include <Trappist-1\abilities\AbilityManager.hpp>
 #include <Trappist-1\entities\Entity.hpp>
 
 AbilityManager::AbilityManager()

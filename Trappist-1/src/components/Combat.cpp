@@ -1,4 +1,4 @@
-#include <Trappist-1\components\Combat.h>
+#include <Trappist-1\components\Combat.hpp>
 #include <Trappist-1\util\Time.hpp>
 
 Combat::Combat(Entity *entity, float attackSpeed, float damage) : Component(entity)

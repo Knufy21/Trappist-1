@@ -1,4 +1,4 @@
-#include <Trappist-1\abilities\Ability.h>
+#include <Trappist-1\abilities\Ability.hpp>
 #include <Trappist-1\util\Time.hpp>
 
 Ability::Ability(AbilityType type, float cooldown, std::function<bool(Entity *entity)> castFunction)

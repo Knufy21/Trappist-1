@@ -252,16 +252,16 @@
     <ClInclude Include="include\Trappist-1\util\Randomf.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Trappist-1\abilities\Ability.h">
+    <ClInclude Include="include\Trappist-1\entities\EntityManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Trappist-1\abilities\AbilityManager.h">
+    <ClInclude Include="include\Trappist-1\components\Combat.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Trappist-1\components\Combat.h">
+    <ClInclude Include="include\Trappist-1\abilities\Ability.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Trappist-1\entities\EntityManager.h">
+    <ClInclude Include="include\Trappist-1\abilities\AbilityManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,10 @@
 #include <Trappist-1\World.hpp>
 #include <Trappist-1\entities\Entity.hpp>
 
+#include <SFML\Graphics\Image.hpp>
+
+#include <fstream>
+
 namespace World
 {
 	std::vector<Entity*>::iterator iterator;
@@ -80,6 +84,103 @@ namespace World
 
 			tileSelection[i].textureRect = tileAtlas.getTexCoord(std::string(tileSelection[i].name));
 		}
+	}
+
+	void loadTileMap(const char *fileName)
+	{
+		std::ifstream file(fileName, std::ios::binary);
+		if (!file.good())
+			return;
+
+		tiles.resize(World::TILE_COUNT);
+		file.read(reinterpret_cast<char *>(tiles.data()), sizeof(Tile::Type) * World::TILE_COUNT);
+
+		file.close();
+	}
+
+	void saveTileMap(const char *fileName)
+	{
+		std::ofstream file(fileName, std::ios::binary);
+		if (!file.good())
+			return;
+
+		tiles.resize(World::TILE_COUNT);
+		file.write(reinterpret_cast<const char *>(tiles.data()), sizeof(Tile::Type) * World::TILE_COUNT);
+
+		file.close();
+	}
+
+	void loadTileMapFromImage(const char *fileName)
+	{
+		sf::Image img;
+		img.loadFromFile(fileName);
+
+		if (img.getSize().x * img.getSize().y != World::TILE_COUNT)
+			return;
+
+		tiles.resize(World::TILE_COUNT);
+		for (unsigned int y = 0; y < World::TILE_HEIGHT; ++y)
+		{
+			for (unsigned int x = 0; x < World::TILE_WIDTH; ++x)
+			{
+				sf::Color imgCol = img.getPixel(x, y);
+				tiles[y * World::TILE_WIDTH + x] = getTileTypeFromColor(glm::vec3(imgCol.r / 255.0f, imgCol.g / 255.0f, imgCol.b / 255.0f));
+			}
+		}
+	}
+
+	Tile::Type getTileTypeFromColor(const glm::vec3 &color)
+	{
+		for (Tile::type_t i = 0; i < static_cast<Tile::type_t>(Tile::Type::COUNT); ++i)
+		{
+			if (getColorFromTileType(static_cast<Tile::Type>(i)) == color)
+				return static_cast<Tile::Type>(i);
+		}
+		return static_cast<Tile::Type>(0);
+	}
+
+	glm::vec3 getColorFromTileType(Tile::Type type)
+	{
+		switch (type)
+		{
+		default:
+			return glm::vec3(0.0f, 0.0f, 0.0f);
+		case Tile::Type::DIRT:
+			return glm::vec3(124.0f / 255.0f, 67.0f / 255.0f, 0.0f / 255.0f);
+		case Tile::Type::GRASS:
+			return glm::vec3(96.0f / 255.0f, 167.0f / 255.0f, 20.0f / 255.0f);
+		case Tile::Type::PARQUET_BRIGHT:
+			return glm::vec3(224.0f / 255.0f, 162.0f / 255.0f, 14.0f / 255.0f);
+		case Tile::Type::PARQUET_DARK:
+			return glm::vec3(244.0f / 255.0f, 162.0f / 255.0f, 14.0f / 255.0f);
+		case Tile::Type::SAND:
+			return glm::vec3(255.0f / 255.0f, 244.0f / 255.0f, 184.0f / 255.0f);
+		case Tile::Type::STONE_PLATE:
+			return glm::vec3(115.0f / 255.0f, 115.0f / 255.0f, 115.0f / 255.0f);
+		case Tile::Type::STONE:
+			return glm::vec3(182.0f / 255.0f, 182.0f / 255.0f, 182.0f / 255.0f);
+		}
+	}
+
+	void genColorPalette(const char *fileName)
+	{
+		sf::Image img;
+		img.create(World::TILE_PIXEL_WIDTH * static_cast<unsigned int>(Tile::Type::COUNT), World::TILE_PIXEL_HEIGHT, sf::Color(0, 0, 0, 0));
+
+		for (Tile::type_t i = 0; i < static_cast<Tile::type_t>(Tile::Type::COUNT); ++i)
+		{
+			glm::vec3 color = getColorFromTileType(static_cast<Tile::Type>(i));
+			sf::Color sfCol(static_cast<sf::Uint8>(color.r * 255.0f), static_cast<sf::Uint8>(color.g * 255.0f), static_cast<sf::Uint8>(color.b * 255.0f), 255);
+			for (unsigned int y = 0; y < World::TILE_PIXEL_HEIGHT; ++y)
+			{
+				for (unsigned int x = 0; x < World::TILE_PIXEL_WIDTH; ++x)
+				{
+					img.setPixel(i * World::TILE_PIXEL_WIDTH + x, y, sfCol);
+				}
+			}
+		}
+
+		img.saveToFile(fileName);
 	}
 
 	float getLeftBorder(float screenWidth)

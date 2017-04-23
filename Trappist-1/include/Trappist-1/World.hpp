@@ -61,6 +61,23 @@ namespace World
 	// Loads the tile selection with the specified tile atlas
 	void loadTileSelection(const TextureAtlas &tileAtlas);
 
+	// Loads the tile map from the specified file.
+	void loadTileMap(const char *fileName);
+
+	// Saves the tile map to the specified file.
+	void saveTileMap(const char *fileName);
+
+	// Loads the tile map from the specified png image.
+	void loadTileMapFromImage(const char *fileName);
+
+	// Returns the tile associated with the specified color. (Very inefficient)
+	Tile::Type getTileTypeFromColor(const glm::vec3 &color);
+
+	// Returns the color associated with the specified tile type.
+	glm::vec3 getColorFromTileType(Tile::Type type);
+
+	void genColorPalette(const char *fileName);
+
 	float getLeftBorder(float screenWidth);
 	float getTopBorder(float screenHeight);
 	float getRightBorder(float screenWidth);

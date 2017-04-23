@@ -1,4 +1,4 @@
-#include <Trappist-1\entities\EntityManager.h>
+#include <Trappist-1\entities\EntityManager.hpp>
 
 namespace EntityManager
 {

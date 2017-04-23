@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Trappist-1\abilities\Ability.h" />
-    <ClInclude Include="include\Trappist-1\abilities\AbilityManager.h" />
+    <ClInclude Include="include\Trappist-1\abilities\Ability.hpp" />
+    <ClInclude Include="include\Trappist-1\abilities\AbilityManager.hpp" />
     <ClInclude Include="include\Trappist-1\animation\Animation.hpp" />
     <ClInclude Include="include\Trappist-1\animation\AnimationSheet.hpp" />
     <ClInclude Include="include\Trappist-1\animation\AnimationSheetManager.hpp" />
@@ -28,7 +28,7 @@
     <ClInclude Include="include\Trappist-1\Components.hpp" />
     <ClInclude Include="include\Trappist-1\components\Animator.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Collider.hpp" />
-    <ClInclude Include="include\Trappist-1\components\Combat.h" />
+    <ClInclude Include="include\Trappist-1\components\Combat.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Component.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Health.hpp" />
     <ClInclude Include="include\Trappist-1\Components\Movement.hpp" />
@@ -36,7 +36,7 @@
     <ClInclude Include="include\Trappist-1\Core.hpp" />
     <ClInclude Include="include\Trappist-1\Entities.hpp" />
     <ClInclude Include="include\Trappist-1\Entities\Entity.hpp" />
-    <ClInclude Include="include\Trappist-1\entities\EntityManager.h" />
+    <ClInclude Include="include\Trappist-1\entities\EntityManager.hpp" />
     <ClInclude Include="include\Trappist-1\Entities\Player.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Fonts\Character.hpp" />
     <ClInclude Include="include\Trappist-1\Graphics\Fonts\Font.hpp" />

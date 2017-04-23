@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Trappist-1\abilities\Ability.h>
+#include <Trappist-1\abilities\Ability.hpp>
 
 class Entity;
 
